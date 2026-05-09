@@ -4,847 +4,578 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>95ЛИНГВА — Переводчик</title>
+<title>95ЛИНГВА</title>
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #1a1a24;
-    --border: #2a2a3a;
-    --accent: #ff4d00;
-    --accent2: #ff8c42;
-    --text: #e8e8f0;
-    --text-dim: #6a6a80;
-    --green: #39ff7a;
-  }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
-
-html {
-background: #0a0a0f !important;
-}
-
-body {
-background: #0a0a0f !important;
-background: var(–bg) !important;
-color: var(–text);
-font-family: ‘Courier New’, ‘Lucida Console’, monospace;
-min-height: 100vh;
-overflow-x: hidden;
-}
-
-/* NOISE OVERLAY */
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 100;
-opacity: 0.4;
-}
-
-/* SCANLINES */
-body::after {
-content: ‘’;
-position: fixed;
-inset: 0;
-background: repeating-linear-gradient(
-0deg,
-transparent,
-transparent 2px,
-rgba(0,0,0,0.08) 2px,
-rgba(0,0,0,0.08) 4px
-);
-pointer-events: none;
-z-index: 99;
+html, body {
+background-color: #0d0d0d;
+color: #e0e0e0;
+font-family: ‘Courier New’, Courier, monospace;
+min-height: 100%;
 }
 
 header {
-border-bottom: 1px solid var(–border);
-padding: 0 40px;
+background-color: #0d0d0d;
+border-bottom: 1px solid #2a2a2a;
+padding: 14px 20px;
 display: flex;
 align-items: center;
 justify-content: space-between;
-height: 64px;
-position: relative;
 }
 
 .logo {
-font-family: Georgia, ‘Times New Roman’, serif;
+font-family: Georgia, serif;
 font-style: italic;
-font-size: 2.2rem;
-letter-spacing: 0.04em;
-color: var(–text);
-display: flex;
-align-items: baseline;
-gap: 2px;
+font-size: 1.7rem;
+color: #f0f0f0;
 }
 
-.logo span {
-color: var(–accent);
-font-size: 2.6rem;
-}
+.logo b { color: #ff4d00; font-style: normal; }
 
-.logo-sub {
-font-family: ‘Courier New’, monospace;
-font-size: 0.55rem;
-color: var(–text-dim);
-letter-spacing: 0.3em;
+.badge {
+font-size: 0.6rem;
+letter-spacing: 0.25em;
+color: #555;
 text-transform: uppercase;
-margin-left: 10px;
-margin-bottom: 4px;
-}
-
-.status-dot {
 display: flex;
 align-items: center;
-gap: 8px;
-font-family: ‘Courier New’, monospace;
-font-size: 0.7rem;
-color: var(–text-dim);
-letter-spacing: 0.1em;
+gap: 7px;
 }
 
-.status-dot::before {
-content: ‘’;
-width: 7px;
-height: 7px;
+.dot {
+width: 6px; height: 6px;
 border-radius: 50%;
-background: var(–green);
-box-shadow: 0 0 8px var(–green);
-animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-0%, 100% { opacity: 1; }
-50% { opacity: 0.3; }
-}
-
-.main-container {
-max-width: 1100px;
-margin: 0 auto;
-padding: 48px 24px;
-}
-
-/* LANGUAGE SELECTOR BAR */
-.lang-bar {
-display: flex;
-align-items: center;
-gap: 0;
-margin-bottom: 20px;
-border: 1px solid var(–border);
-border-radius: 4px;
-overflow: hidden;
-background: var(–surface);
-}
-
-.lang-panel {
-flex: 1;
-display: flex;
-gap: 4px;
-padding: 8px 12px;
-}
-
-.lang-btn {
-font-family: ‘Courier New’, monospace;
-font-size: 0.75rem;
-letter-spacing: 0.08em;
-padding: 7px 16px;
-border: 1px solid transparent;
-border-radius: 3px;
-background: transparent;
-color: var(–text-dim);
-cursor: pointer;
-transition: all 0.15s;
-text-transform: uppercase;
-}
-
-.lang-btn:hover {
-color: var(–text);
-background: var(–surface2);
-}
-
-.lang-btn.active {
-background: var(–accent);
-color: #fff;
-border-color: var(–accent);
-}
-
-.swap-btn {
-width: 56px;
-height: 56px;
-display: flex;
-align-items: center;
-justify-content: center;
-background: var(–surface2);
-border: none;
-border-left: 1px solid var(–border);
-border-right: 1px solid var(–border);
-cursor: pointer;
-color: var(–text-dim);
-font-size: 1.1rem;
-transition: all 0.2s;
+background: #39ff7a;
+box-shadow: 0 0 6px #39ff7a;
+animation: blink 2s ease-in-out infinite;
 flex-shrink: 0;
 }
 
-.swap-btn:hover {
-color: var(–accent);
-background: var(–surface);
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+main {
+max-width: 900px;
+margin: 0 auto;
+padding: 28px 16px 60px;
 }
 
-.swap-btn:active {
-transform: rotate(180deg);
-}
-
-/* TRANSLATE AREA */
-.translate-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 0;
-border: 1px solid var(–border);
-border-radius: 4px;
-overflow: hidden;
-min-height: 280px;
-}
-
-.translate-pane {
-background: var(–surface);
+.lang-bar {
 display: flex;
-flex-direction: column;
-position: relative;
+align-items: stretch;
+border: 1px solid #2a2a2a;
+border-radius: 6px;
+overflow: hidden;
+margin-bottom: 16px;
+background-color: #161616;
 }
 
-.translate-pane:first-child {
-border-right: 1px solid var(–border);
-}
-
-.pane-header {
-padding: 12px 16px;
-border-bottom: 1px solid var(–border);
+.lang-side {
+flex: 1;
 display: flex;
 align-items: center;
-justify-content: space-between;
-background: var(–surface2);
+gap: 4px;
+padding: 8px 10px;
+flex-wrap: wrap;
 }
 
-.pane-lang-label {
+.lbtn {
 font-family: ‘Courier New’, monospace;
-font-size: 0.7rem;
-color: var(–text-dim);
-letter-spacing: 0.2em;
+font-size: 0.72rem;
+letter-spacing: 0.1em;
+padding: 6px 14px;
+border: 1px solid #333;
+border-radius: 4px;
+background: transparent;
+color: #666;
+cursor: pointer;
 text-transform: uppercase;
+transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
-.char-count {
-font-family: ‘Courier New’, monospace;
-font-size: 0.65rem;
-color: var(–text-dim);
+.lbtn:hover { color: #ccc; border-color: #555; background: #1e1e1e; }
+.lbtn.on { background-color: #ff4d00; color: #fff; border-color: #ff4d00; }
+
+.swap-wrap {
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 0 8px;
+border-left: 1px solid #2a2a2a;
+border-right: 1px solid #2a2a2a;
+background-color: #1a1a1a;
 }
+
+.sbtn {
+width: 40px; height: 40px;
+background: #222;
+border: 1px solid #333;
+border-radius: 4px;
+color: #888;
+font-size: 1rem;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.sbtn:hover { color: #ff4d00; border-color: #ff4d00; background: #1a1a1a; }
+
+.panels {
+display: grid;
+grid-template-columns: 1fr 1fr;
+border: 1px solid #2a2a2a;
+border-radius: 6px;
+overflow: hidden;
+min-height: 240px;
+}
+
+@media (max-width: 580px) {
+.panels { grid-template-columns: 1fr; }
+.panel-left { border-right: none !important; border-bottom: 1px solid #2a2a2a; }
+}
+
+.panel-left, .panel-right {
+display: flex;
+flex-direction: column;
+background-color: #131313;
+}
+
+.panel-left { border-right: 1px solid #2a2a2a; }
+
+.panel-head {
+background-color: #1a1a1a;
+border-bottom: 1px solid #2a2a2a;
+padding: 9px 14px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.plabel { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; }
+.pcount { font-size: 0.6rem; color: #444; }
 
 textarea {
 flex: 1;
 background: transparent;
 border: none;
 outline: none;
-padding: 20px;
+padding: 18px;
 font-family: ‘Courier New’, monospace;
-font-size: 1rem;
-color: var(–text);
+font-size: 0.95rem;
+color: #e0e0e0;
 resize: none;
 line-height: 1.7;
-min-height: 220px;
+min-height: 200px;
+caret-color: #ff4d00;
 }
 
-textarea::placeholder {
-color: var(–text-dim);
-font-style: italic;
-}
+textarea::placeholder { color: #3a3a3a; font-style: italic; }
 
-.output-pane {
-background: var(–surface);
-}
-
-.output-text {
+.output {
 flex: 1;
-padding: 20px;
+padding: 18px;
 font-family: ‘Courier New’, monospace;
-font-size: 1rem;
-color: var(–green);
+font-size: 0.95rem;
 line-height: 1.7;
-min-height: 220px;
+min-height: 200px;
+color: #39ff7a;
 position: relative;
 overflow-y: auto;
+word-break: break-word;
 }
 
-.output-text.empty {
-color: var(–text-dim);
-font-style: italic;
-}
+.output.empty { color: #3a3a3a; font-style: italic; }
 
-/* TRANSLATE BUTTON */
-.action-bar {
+.actions {
 display: flex;
 justify-content: center;
-margin-top: 20px;
-gap: 12px;
+gap: 10px;
+margin-top: 16px;
 }
 
-.translate-btn {
+.tbtn {
 font-family: Georgia, serif;
 font-style: italic;
-font-size: 1.1rem;
+font-size: 1rem;
 letter-spacing: 0.15em;
-padding: 14px 52px;
-background: var(–accent);
+padding: 12px 48px;
+background-color: #ff4d00;
 color: #fff;
 border: none;
-border-radius: 3px;
+border-radius: 4px;
 cursor: pointer;
-transition: all 0.2s;
-position: relative;
-overflow: hidden;
+transition: background 0.15s, transform 0.1s;
 }
 
-.translate-btn::before {
-content: ‘’;
-position: absolute;
-top: 0; left: -100%;
-width: 100%;
-height: 100%;
-background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-transition: 0.4s;
-}
+.tbtn:hover { background-color: #ff6620; }
+.tbtn:active { transform: scale(0.98); }
 
-.translate-btn:hover::before {
-left: 100%;
-}
-
-.translate-btn:hover {
-background: #ff6620;
-transform: translateY(-1px);
-box-shadow: 0 6px 24px rgba(255,77,0,0.4);
-}
-
-.translate-btn:active {
-transform: translateY(0);
-}
-
-.clear-btn {
+.xbtn {
 font-family: ‘Courier New’, monospace;
-font-size: 0.75rem;
+font-size: 0.7rem;
 letter-spacing: 0.1em;
-padding: 14px 24px;
+text-transform: uppercase;
+padding: 12px 20px;
 background: transparent;
-color: var(–text-dim);
-border: 1px solid var(–border);
-border-radius: 3px;
+color: #555;
+border: 1px solid #2a2a2a;
+border-radius: 4px;
 cursor: pointer;
-transition: all 0.2s;
+transition: color 0.15s, border-color 0.15s;
+}
+
+.xbtn:hover { color: #aaa; border-color: #555; }
+
+.hint {
+text-align: center;
+margin-top: 10px;
+font-size: 0.58rem;
+letter-spacing: 0.15em;
+color: #333;
 text-transform: uppercase;
 }
 
-.clear-btn:hover {
-color: var(–text);
-border-color: var(–text-dim);
-}
+.dict-section { margin-top: 52px; }
 
-/* DICTIONARY SECTION */
-.dict-section {
-margin-top: 60px;
-}
-
-.section-title {
+.dict-title {
 font-family: Georgia, serif;
 font-style: italic;
-font-size: 1.8rem;
-letter-spacing: 0.05em;
-color: var(–text);
+font-size: 1.5rem;
+color: #ccc;
 margin-bottom: 4px;
 display: flex;
 align-items: center;
-gap: 12px;
+gap: 14px;
 }
 
-.section-title::after {
-content: ‘’;
-flex: 1;
-height: 1px;
-background: var(–border);
-}
+.dict-title::after { content:’’; flex:1; height:1px; background:#2a2a2a; }
 
-.section-sub {
-font-family: ‘Courier New’, monospace;
-font-size: 0.65rem;
-color: var(–text-dim);
+.dict-sub {
+font-size: 0.58rem;
 letter-spacing: 0.2em;
+color: #444;
 text-transform: uppercase;
-margin-bottom: 24px;
+margin-bottom: 20px;
 }
 
 .dict-grid {
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
 gap: 8px;
 }
 
-.dict-category {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 4px;
+.dcat {
+background-color: #131313;
+border: 1px solid #2a2a2a;
+border-radius: 5px;
 overflow: hidden;
 }
 
-.dict-cat-header {
-padding: 8px 14px;
-background: var(–surface2);
-border-bottom: 1px solid var(–border);
-font-family: ‘Courier New’, monospace;
-font-size: 0.65rem;
+.dcat-head {
+background-color: #1a1a1a;
+border-bottom: 1px solid #2a2a2a;
+padding: 7px 12px;
+font-size: 0.58rem;
 letter-spacing: 0.2em;
 text-transform: uppercase;
-color: var(–accent2);
+color: #ff8c42;
 }
 
-.dict-entries {
-padding: 10px 0;
-}
-
-.dict-entry {
+.dentry {
 display: flex;
-align-items: center;
 justify-content: space-between;
-padding: 5px 14px;
+align-items: center;
+padding: 5px 12px;
 cursor: pointer;
 transition: background 0.1s;
+gap: 8px;
 }
 
-.dict-entry:hover {
-background: var(–surface2);
-}
+.dentry:hover { background-color: #1a1a1a; }
+.dru { font-size: 0.8rem; color: #666; }
+.d95 { font-size: 0.78rem; color: #39ff7a; font-weight: bold; }
 
-.dict-ru {
-font-size: 0.85rem;
-color: var(–text-dim);
-}
-
-.dict-95 {
-font-family: ‘Courier New’, monospace;
-font-size: 0.8rem;
-color: var(–green);
-font-weight: 600;
-}
-
-/* FLASH MESSAGE */
-.flash {
+.toast {
 position: fixed;
-bottom: 24px;
+bottom: 28px;
 left: 50%;
-transform: translateX(-50%) translateY(80px);
-background: var(–surface2);
-border: 1px solid var(–accent);
-color: var(–text);
-font-family: ‘Courier New’, monospace;
-font-size: 0.75rem;
-letter-spacing: 0.1em;
-padding: 10px 24px;
-border-radius: 3px;
-transition: transform 0.3s ease;
-z-index: 200;
+transform: translateX(-50%) translateY(70px);
+background-color: #1a1a1a;
+border: 1px solid #ff4d00;
+color: #e0e0e0;
+font-size: 0.7rem;
+letter-spacing: 0.12em;
+padding: 9px 22px;
+border-radius: 4px;
+transition: transform 0.25s ease;
+z-index: 999;
+white-space: nowrap;
 }
 
-.flash.show {
-transform: translateX(-50%) translateY(0);
-}
+.toast.show { transform: translateX(-50%) translateY(0); }
 
-/* COPY BUTTON */
-.copy-btn {
+.cpbtn {
 position: absolute;
-bottom: 12px;
-right: 12px;
+bottom: 10px; right: 10px;
 font-family: ‘Courier New’, monospace;
-font-size: 0.65rem;
+font-size: 0.58rem;
 letter-spacing: 0.1em;
-padding: 6px 14px;
-background: transparent;
-color: var(–text-dim);
-border: 1px solid var(–border);
-border-radius: 2px;
-cursor: pointer;
 text-transform: uppercase;
-transition: all 0.15s;
+padding: 5px 12px;
+background: transparent;
+color: #444;
+border: 1px solid #2a2a2a;
+border-radius: 3px;
+cursor: pointer;
+transition: color 0.15s, border-color 0.15s;
 opacity: 0;
 }
 
-.output-text:hover .copy-btn,
-.copy-btn:focus {
-opacity: 1;
-}
-
-.copy-btn:hover {
-color: var(–green);
-border-color: var(–green);
-}
-
-@media (max-width: 640px) {
-header { padding: 0 16px; }
-.translate-grid { grid-template-columns: 1fr; }
-.translate-pane:first-child { border-right: none; border-bottom: 1px solid var(–border); }
-.main-container { padding: 24px 16px; }
-.logo { font-size: 1.6rem; }
-.logo span { font-size: 2rem; }
-.logo-sub { display: none; }
-}
+.output:hover .cpbtn { opacity: 1; }
+.cpbtn:hover { color: #39ff7a; border-color: #39ff7a; }
 </style>
 
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    <span>95</span>ЛИНГВА
-    <div class="logo-sub">Translator v1.0</div>
-  </div>
-  <div class="status-dot">СЛОВАРЬ АКТИВЕН</div>
+  <div class="logo"><b>95</b>ЛИНГВА</div>
+  <div class="badge"><span class="dot"></span>словарь активен</div>
 </header>
 
-<div class="main-container">
-
-  <!-- LANGUAGE BAR -->
-
+<main>
   <div class="lang-bar">
-    <div class="lang-panel" id="from-panel">
-      <button class="lang-btn active" data-lang="ru" onclick="setLang('from','ru',this)">RU</button>
-      <button class="lang-btn" data-lang="en" onclick="setLang('from','en',this)">EN</button>
-      <button class="lang-btn" data-lang="95" onclick="setLang('from','95',this)">95</button>
+    <div class="lang-side" id="from-side">
+      <button class="lbtn on" data-l="ru" onclick="pickLang('from','ru',this)">RU</button>
+      <button class="lbtn"    data-l="en" onclick="pickLang('from','en',this)">EN</button>
+      <button class="lbtn"    data-l="95" onclick="pickLang('from','95',this)">95</button>
     </div>
-    <button class="swap-btn" onclick="swapLangs()" title="Поменять языки">⇄</button>
-    <div class="lang-panel" id="to-panel">
-      <button class="lang-btn" data-lang="ru" onclick="setLang('to','ru',this)">RU</button>
-      <button class="lang-btn" data-lang="en" onclick="setLang('to','en',this)">EN</button>
-      <button class="lang-btn active" data-lang="95" onclick="setLang('to','95',this)">95</button>
+    <div class="swap-wrap">
+      <button class="sbtn" onclick="doSwap()">&#8644;</button>
+    </div>
+    <div class="lang-side" id="to-side">
+      <button class="lbtn"    data-l="ru" onclick="pickLang('to','ru',this)">RU</button>
+      <button class="lbtn"    data-l="en" onclick="pickLang('to','en',this)">EN</button>
+      <button class="lbtn on" data-l="95" onclick="pickLang('to','95',this)">95</button>
     </div>
   </div>
 
-  <!-- TRANSLATE BOXES -->
-
-  <div class="translate-grid">
-    <div class="translate-pane">
-      <div class="pane-header">
-        <span class="pane-lang-label" id="from-label">РУССКИЙ</span>
-        <span class="char-count" id="char-count">0 / ∞</span>
+  <div class="panels">
+    <div class="panel-left">
+      <div class="panel-head">
+        <span class="plabel" id="from-lbl">Русский</span>
+        <span class="pcount" id="cnt">0</span>
       </div>
-      <textarea id="input-text" placeholder="Введите текст для перевода..." oninput="updateCharCount()"></textarea>
+      <textarea id="inp" placeholder="Введите текст..." oninput="document.getElementById('cnt').textContent=this.value.length"></textarea>
     </div>
-    <div class="translate-pane output-pane">
-      <div class="pane-header">
-        <span class="pane-lang-label" id="to-label">ЯЗЫК 95</span>
+    <div class="panel-right">
+      <div class="panel-head">
+        <span class="plabel" id="to-lbl">Язык 95</span>
       </div>
-      <div class="output-text empty" id="output-text">
+      <div class="output empty" id="out">
         Перевод появится здесь...
-        <button class="copy-btn" onclick="copyOutput()">КОПИРОВАТЬ</button>
+        <button class="cpbtn" onclick="doCopy()">копировать</button>
       </div>
     </div>
   </div>
 
-  <!-- ACTIONS -->
-
-  <div class="action-bar">
-    <button class="clear-btn" onclick="clearAll()">Очистить</button>
-    <button class="translate-btn" onclick="doTranslate()">ПЕРЕВЕСТИ</button>
+  <div class="actions">
+    <button class="xbtn" onclick="doClear()">Очистить</button>
+    <button class="tbtn" onclick="doTranslate()">Перевести</button>
   </div>
-
-  <!-- DICTIONARY -->
+  <p class="hint">ctrl + enter — быстрый перевод</p>
 
   <div class="dict-section">
-    <div class="section-title">Словарь Языка 95</div>
-    <div class="section-sub">// нажмите на слово, чтобы вставить в поле ввода</div>
-    <div class="dict-grid" id="dict-grid"></div>
+    <div class="dict-title">Словарь</div>
+    <div class="dict-sub">// нажмите слово — вставится в поле</div>
+    <div class="dict-grid" id="dgrid"></div>
   </div>
+</main>
 
-</div>
-
-<div class="flash" id="flash"></div>
+<div class="toast" id="toast"></div>
 
 <script>
-// ===== DICTIONARY =====
-const DICT = {
-  // PRONOUNS
-  "я": "ya", "ты": "tu", "он": "var", "она": "vera", "оно": "nev", "вы": "vos",
-  // BASIC
-  "привет": "varel", "пока": "norix", "как дела": "tavek", "хорошо": "zenor",
-  "плохо": "drask", "спасибо": "elvar", "пожалуйста": "merok", "да": "va", "нет": "nox",
-  // WORLD / OBJECTS
-  "дом": "kvar", "жопа": "gorn", "язык": "lath", "хуйня": "shrak",
-  "вода": "lini", "машина": "vokar", "телефон": "tekra", "музыка": "jareth",
-  // ACTIONS
-  "плыть": "norvek", "плывете": "norvekt", "утонул": "drenor",
-  "захлебнулся": "skelvar", "умри": "drax", "умереть": "draxor",
-  "умер": "draven", "идти": "go", "есть": "eat", "пить": "drin",
-  // SLANG
-  "отвали": "kraz", "уйди": "kror", "заткнись": "zark", "враг": "vrak",
-  "хаос": "xarn", "конец": "nork", "достал": "krenz", "исчезни": "drak",
-  // EMOTIONS
-  "любовь": "luv", "страх": "fear", "радость": "joy", "жизнь": "lif",
-  "свет": "lux", "тьма": "dark",
-  // EXTRA
-  "это": "dex", "человек": "kren", "друг": "varo"
+var RU95 = {
+  "я":"ya","ты":"tu","он":"var","она":"vera","оно":"nev","вы":"vos",
+  "привет":"varel","пока":"norix","как дела":"tavek","хорошо":"zenor",
+  "плохо":"drask","спасибо":"elvar","пожалуйста":"merok","да":"va","нет":"nox",
+  "дом":"kvar","жопа":"gorn","язык":"lath","хуйня":"shrak",
+  "вода":"lini","машина":"vokar","телефон":"tekra","музыка":"jareth",
+  "плыть":"norvek","плывете":"norvekt","утонул":"drenor",
+  "захлебнулся":"skelvar","умри":"drax","умереть":"draxor",
+  "умер":"draven","идти":"go","есть":"eat","пить":"drin",
+  "отвали":"kraz","уйди":"kror","заткнись":"zark","враг":"vrak",
+  "хаос":"xarn","конец":"nork","достал":"krenz","исчезни":"drak",
+  "любовь":"luv","страх":"fear","радость":"joy","жизнь":"lif",
+  "свет":"lux","тьма":"dark","это":"dex","человек":"kren","друг":"varo"
 };
 
-// English equivalents (for EN ↔ 95)
-const DICT_EN = {
-  "i": "ya", "you": "tu", "he": "var", "she": "vera", "it": "nev", "you (pl)": "vos",
-  "hello": "varel", "bye": "norix", "how are you": "tavek", "good": "zenor",
-  "bad": "drask", "thank you": "elvar", "please": "merok", "yes": "va", "no": "nox",
-  "home": "kvar", "language": "lath", "water": "lini", "car": "vokar",
-  "phone": "tekra", "music": "jareth", "swim": "norvek", "drowned": "drenor",
-  "die": "draxor", "go": "go", "eat": "eat", "drink": "drin",
-  "get lost": "kraz", "go away": "kror", "shut up": "zark", "enemy": "vrak",
-  "chaos": "xarn", "end": "nork", "this": "dex", "person": "kren", "friend": "varo",
-  "love": "luv", "fear": "fear", "joy": "joy", "life": "lif", "light": "lux", "dark": "dark"
+var EN95 = {
+  "i":"ya","you":"tu","he":"var","she":"vera","it":"nev",
+  "hello":"varel","bye":"norix","how are you":"tavek","good":"zenor",
+  "bad":"drask","thank you":"elvar","please":"merok","yes":"va","no":"nox",
+  "home":"kvar","language":"lath","water":"lini","car":"vokar",
+  "phone":"tekra","music":"jareth","swim":"norvek","drowned":"drenor",
+  "die":"draxor","go":"go","eat":"eat","drink":"drin",
+  "get lost":"kraz","go away":"kror","shut up":"zark","enemy":"vrak",
+  "chaos":"xarn","end":"nork","this":"dex","person":"kren","friend":"varo",
+  "love":"luv","fear":"fear","joy":"joy","life":"lif","light":"lux","dark":"dark"
 };
 
-// Reverse maps
-const DICT_REV = {}; // 95 → RU
-const DICT_EN_REV = {}; // 95 → EN
-for (const [ru, w95] of Object.entries(DICT)) DICT_REV[w95] = ru;
-for (const [en, w95] of Object.entries(DICT_EN)) DICT_EN_REV[w95] = en;
+var R95 = {}, R95EN = {};
+for (var k in RU95) R95[RU95[k]] = k;
+for (var k in EN95) R95EN[EN95[k]] = k;
 
-// ===== CATEGORIES for display =====
-const CATEGORIES = [
-  { label: "Местоимения", words: ["я","ты","он","она","оно","вы"] },
-  { label: "Базовые", words: ["привет","пока","да","нет","хорошо","плохо","спасибо","пожалуйста","как дела"] },
-  { label: "Предметы", words: ["дом","вода","машина","телефон","музыка","язык","это"] },
-  { label: "Действия", words: ["идти","есть","пить","плыть","плывете","умереть","умер","умри","утонул","захлебнулся"] },
-  { label: "Сленг", words: ["отвали","уйди","заткнись","исчезни","достал","хаос","конец","враг","хуйня","жопа"] },
-  { label: "Эмоции / Жизнь", words: ["любовь","страх","радость","жизнь","свет","тьма"] },
-  { label: "Люди", words: ["человек","друг"] }
-];
+var LBLS = {ru:'Русский', en:'English', '95':'Язык 95'};
+var PHS  = {ru:'Введите текст...', en:'Enter text...', '95':'Kren dex lath...'};
+var FL = 'ru', TL = '95';
 
-// ===== STATE =====
-let fromLang = 'ru';
-let toLang = '95';
-
-const LANG_LABELS = { ru: 'РУССКИЙ', en: 'ENGLISH', '95': 'ЯЗЫК 95' };
-const LANG_PLACEHOLDERS = {
-  ru: 'Введите текст для перевода...',
-  en: 'Enter text to translate...',
-  '95': 'Kren dex lath...'
-};
-
-// ===== TRANSLATE LOGIC =====
-function translateText(text, from, to) {
-  if (!text.trim()) return '';
-
-  let result = [];
-  const words = text.toLowerCase().trim().split(/\s+/);
-
-  // Handle multi-word phrases first
-  // Try to match phrases of 3, 2, then 1 words
-  let i = 0;
-  while (i < words.length) {
-    let matched = false;
-
-    // Try 3-word phrase
-    if (i + 2 < words.length) {
-      const phrase = words.slice(i, i + 3).join(' ');
-      const t = translateWord(phrase, from, to);
-      if (t !== null) { result.push(t); i += 3; matched = true; }
-    }
-    // Try 2-word phrase
-    if (!matched && i + 1 < words.length) {
-      const phrase = words.slice(i, i + 2).join(' ');
-      const t = translateWord(phrase, from, to);
-      if (t !== null) { result.push(t); i += 2; matched = true; }
-    }
-    // Single word
-    if (!matched) {
-      const t = translateWord(words[i], from, to);
-      result.push(t !== null ? t : `[${words[i]}]`);
-      i++;
-    }
-  }
-
-  return result.join(' ');
-}
-
-function translateWord(word, from, to) {
-  if (from === 'ru' && to === '95') {
-    return DICT[word] !== undefined ? DICT[word] : null;
-  }
-  if (from === '95' && to === 'ru') {
-    return DICT_REV[word] !== undefined ? DICT_REV[word] : null;
-  }
-  if (from === 'en' && to === '95') {
-    return DICT_EN[word] !== undefined ? DICT_EN[word] : null;
-  }
-  if (from === '95' && to === 'en') {
-    return DICT_EN_REV[word] !== undefined ? DICT_EN_REV[word] : null;
-  }
-  // ru ↔ en: basic via 95 as bridge
-  if (from === 'ru' && to === 'en') {
-    const via = DICT[word];
-    return via && DICT_EN_REV[via] ? DICT_EN_REV[via] : null;
-  }
-  if (from === 'en' && to === 'ru') {
-    const via = DICT_EN[word];
-    return via && DICT_REV[via] ? DICT_REV[via] : null;
-  }
+function tw(w, from, to) {
+  if (from==='ru' && to==='95') return RU95[w] !== undefined ? RU95[w] : null;
+  if (from==='95' && to==='ru') return R95[w]  !== undefined ? R95[w]  : null;
+  if (from==='en' && to==='95') return EN95[w] !== undefined ? EN95[w] : null;
+  if (from==='95' && to==='en') return R95EN[w]!== undefined ? R95EN[w]: null;
+  if (from==='ru' && to==='en') { var v=RU95[w]; return (v && R95EN[v]!==undefined) ? R95EN[v] : null; }
+  if (from==='en' && to==='ru') { var v=EN95[w]; return (v && R95[v]  !==undefined) ? R95[v]   : null; }
   return null;
 }
 
+function translate(text, from, to) {
+  var words = text.toLowerCase().trim().split(/\s+/);
+  var out = [], i = 0;
+  while (i < words.length) {
+    var hit = false;
+    if (!hit && i+2 < words.length) {
+      var p = words.slice(i,i+3).join(' '), t = tw(p,from,to);
+      if (t !== null) { out.push(t); i+=3; hit=true; }
+    }
+    if (!hit && i+1 < words.length) {
+      var p = words.slice(i,i+2).join(' '), t = tw(p,from,to);
+      if (t !== null) { out.push(t); i+=2; hit=true; }
+    }
+    if (!hit) {
+      var t = tw(words[i],from,to);
+      out.push(t !== null ? t : '['+words[i]+']');
+      i++;
+    }
+  }
+  return out.join(' ');
+}
+
 function doTranslate() {
-  const input = document.getElementById('input-text').value;
-  const outputEl = document.getElementById('output-text');
-
-  if (!input.trim()) {
-    showFlash('Введите текст!');
-    return;
-  }
-
-  const result = translateText(input, fromLang, toLang);
-
-  outputEl.innerHTML = result
-    ? `${escapeHtml(result)}<button class="copy-btn" onclick="copyOutput()">КОПИРОВАТЬ</button>`
-    : `<span style="color:var(--text-dim); font-style:italic">Ничего не найдено в словаре</span><button class="copy-btn" onclick="copyOutput()">КОПИРОВАТЬ</button>`;
-  outputEl.classList.remove('empty');
+  var inp = document.getElementById('inp').value.trim();
+  var out = document.getElementById('out');
+  if (!inp) { flash('Введите текст!'); return; }
+  var res = translate(inp, FL, TL);
+  out.innerHTML = esc(res) + '<button class="cpbtn" onclick="doCopy()">копировать</button>';
+  out.className = 'output';
 }
 
-// Enter key support
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && e.ctrlKey) doTranslate();
-});
-
-function escapeHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function doClear() {
+  document.getElementById('inp').value = '';
+  document.getElementById('cnt').textContent = '0';
+  var out = document.getElementById('out');
+  out.innerHTML = 'Перевод появится здесь...<button class="cpbtn" onclick="doCopy()">копировать</button>';
+  out.className = 'output empty';
 }
 
-function clearAll() {
-  document.getElementById('input-text').value = '';
-  document.getElementById('char-count').textContent = '0 / ∞';
-  const out = document.getElementById('output-text');
-  out.innerHTML = `Перевод появится здесь...<button class="copy-btn" onclick="copyOutput()">КОПИРОВАТЬ</button>`;
-  out.classList.add('empty');
+function doCopy() {
+  var t = document.getElementById('out').textContent.replace('копировать','').trim();
+  if (!t || t.indexOf('появится') !== -1) return;
+  navigator.clipboard.writeText(t).then(function(){ flash('Скопировано!'); });
 }
 
-function copyOutput() {
-  const text = document.getElementById('output-text').textContent.replace('КОПИРОВАТЬ','').trim();
-  if (!text || text === 'Перевод появится здесь...') return;
-  navigator.clipboard.writeText(text).then(() => showFlash('Скопировано!'));
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function updateCharCount() {
-  const len = document.getElementById('input-text').value.length;
-  document.getElementById('char-count').textContent = `${len} / ∞`;
-}
-
-// ===== LANG SELECTION =====
-function setLang(side, lang, btn) {
-  // Prevent same lang on both sides
-  const otherSide = side === 'from' ? 'to' : 'from';
-  const otherLang = side === 'from' ? toLang : fromLang;
+function pickLang(side, lang, btn) {
+  var other = side==='from' ? 'to' : 'from';
+  var otherLang = side==='from' ? TL : FL;
   if (lang === otherLang) {
-    // Auto-swap other side
-    const otherPrev = side === 'from' ? fromLang : toLang;
-    setLangInternal(otherSide, otherPrev);
+    var prev = side==='from' ? FL : TL;
+    if (side==='from') TL=prev; else FL=prev;
+    syncBtns(other);
   }
-  setLangInternal(side, lang);
+  if (side==='from') FL=lang; else TL=lang;
+  syncBtns(side);
   updateLabels();
-
-  // Update active btn
-  const panel = document.getElementById(side + '-panel');
-  panel.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  // Update other panel active state
-  const otherPanel = document.getElementById(otherSide + '-panel');
-  const curOther = side === 'from' ? toLang : fromLang;
-  otherPanel.querySelectorAll('.lang-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.lang === curOther);
-  });
 }
 
-function setLangInternal(side, lang) {
-  if (side === 'from') fromLang = lang;
-  else toLang = lang;
+function syncBtns(side) {
+  var lang = side==='from' ? FL : TL;
+  var btns = document.querySelectorAll('#'+side+'-side .lbtn');
+  for (var i=0; i<btns.length; i++) {
+    btns[i].className = 'lbtn' + (btns[i].getAttribute('data-l')===lang ? ' on' : '');
+  }
 }
 
-function swapLangs() {
-  [fromLang, toLang] = [toLang, fromLang];
-  // Swap input/output text
-  const inputEl = document.getElementById('input-text');
-  const outputEl = document.getElementById('output-text');
-  const outText = outputEl.textContent.replace('КОПИРОВАТЬ','').trim();
-  if (outText && outText !== 'Перевод появится здесь...' && outText !== 'Ничего не найдено в словаре') {
-    inputEl.value = outText;
-  }
+function doSwap() {
+  var tmp = FL; FL = TL; TL = tmp;
+  syncBtns('from'); syncBtns('to');
   updateLabels();
-  updateActiveBtns();
-  clearAll();
-  if (inputEl.value) doTranslate();
+  doClear();
 }
 
 function updateLabels() {
-  document.getElementById('from-label').textContent = LANG_LABELS[fromLang];
-  document.getElementById('to-label').textContent = LANG_LABELS[toLang];
-  document.getElementById('input-text').placeholder = LANG_PLACEHOLDERS[fromLang];
+  document.getElementById('from-lbl').textContent = LBLS[FL];
+  document.getElementById('to-lbl').textContent   = LBLS[TL];
+  document.getElementById('inp').placeholder       = PHS[FL];
 }
 
-function updateActiveBtns() {
-  document.querySelectorAll('#from-panel .lang-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.lang === fromLang);
-  });
-  document.querySelectorAll('#to-panel .lang-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.lang === toLang);
-  });
+document.addEventListener('keydown', function(e) {
+  if (e.ctrlKey && e.key==='Enter') doTranslate();
+});
+
+function flash(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show';
+  clearTimeout(t._tid);
+  t._tid = setTimeout(function(){ t.className = 'toast'; }, 2000);
 }
 
-// ===== BUILD DICTIONARY UI =====
-function buildDict() {
-  const grid = document.getElementById('dict-grid');
-  CATEGORIES.forEach(cat => {
-    const el = document.createElement('div');
-    el.className = 'dict-category';
-    const w95List = cat.words.map(w => `<code style="color:var(--green);font-size:0.7rem">${DICT[w]||'?'}</code>`);
-    el.innerHTML = `
-      <div class="dict-cat-header">${cat.label}</div>
-      <div class="dict-entries">
-        ${cat.words.map(w => `
-          <div class="dict-entry" onclick="insertWord('${w}')">
-            <span class="dict-ru">${w}</span>
-            <span class="dict-95">${DICT[w] || '?'}</span>
-          </div>
-        `).join('')}
-      </div>
-    `;
-    grid.appendChild(el);
-  });
-}
+// Build dictionary
+var CATS = [
+  {name:'Местоимения', words:['я','ты','он','она','оно','вы']},
+  {name:'Базовые',     words:['привет','пока','да','нет','хорошо','плохо','спасибо','пожалуйста']},
+  {name:'Предметы',    words:['дом','вода','машина','телефон','музыка','это']},
+  {name:'Действия',    words:['идти','есть','пить','плыть','умереть','умер','умри','утонул']},
+  {name:'Сленг',       words:['отвали','уйди','заткнись','исчезни','достал','конец','враг','хуйня','жопа']},
+  {name:'Эмоции',      words:['любовь','страх','радость','жизнь','свет','тьма']},
+  {name:'Люди',        words:['человек','друг','язык']}
+];
 
-function insertWord(word) {
-  const inp = document.getElementById('input-text');
-  // If from-lang is 95, insert the 95 word; else insert the ru word
-  const toInsert = fromLang === '95' ? (DICT[word] || word) : word;
-  const pos = inp.selectionStart;
-  const before = inp.value.substring(0, pos);
-  const after = inp.value.substring(pos);
-  const spaceBefore = before && !before.endsWith(' ') ? ' ' : '';
-  inp.value = before + spaceBefore + toInsert + ' ' + after;
-  inp.focus();
-  updateCharCount();
-  showFlash(`Вставлено: "${toInsert}"`);
-}
+(function(){
+  var g = document.getElementById('dgrid');
+  for (var i=0; i<CATS.length; i++) {
+    var cat = CATS[i];
+    var html = '<div class="dcat-head">'+cat.name+'</div>';
+    for (var j=0; j<cat.words.length; j++) {
+      var w = cat.words[j];
+      html += '<div class="dentry" onclick="insertWord(\''+w+'\')"><span class="dru">'+w+'</span><span class="d95">'+(RU95[w]||'?')+'</span></div>';
+    }
+    var el = document.createElement('div');
+    el.className = 'dcat';
+    el.innerHTML = html;
+    g.appendChild(el);
+  }
+})();
 
-// ===== FLASH =====
-function showFlash(msg) {
-  const f = document.getElementById('flash');
-  f.textContent = msg;
-  f.classList.add('show');
-  setTimeout(() => f.classList.remove('show'), 2000);
+function insertWord(w) {
+  var word = FL==='95' ? (RU95[w]||w) : w;
+  var el = document.getElementById('inp');
+  var p = el.selectionStart;
+  var before = el.value.slice(0, p);
+  var after  = el.value.slice(p);
+  var sp = (before && before[before.length-1]!==' ') ? ' ' : '';
+  el.value = before + sp + word + ' ' + after;
+  el.focus();
+  document.getElementById('cnt').textContent = el.value.length;
+  flash('Вставлено: ' + word);
 }
-
-// ===== INIT =====
-buildDict();
 </script>
 
 </body>
