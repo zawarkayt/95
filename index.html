@@ -7,334 +7,395 @@
 <title>95ЛИНГВА</title>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-html, body {
-background-color: #0d0d0d;
-color: #e0e0e0;
-font-family: ‘Courier New’, Courier, monospace;
-min-height: 100%;
+html { background-color: #0d0d0d; }
+body {
+  background-color: #0d0d0d;
+  color: #d8d8d8;
+  font-family: 'Courier New', Courier, monospace;
+  min-height: 100vh;
 }
+a { color: inherit; text-decoration: none; }
 
+/* ── HEADER ── */
 header {
 background-color: #0d0d0d;
-border-bottom: 1px solid #2a2a2a;
-padding: 14px 20px;
+border-bottom: 1px solid #222;
+padding: 13px 20px;
 display: flex;
 align-items: center;
 justify-content: space-between;
+position: sticky;
+top: 0;
+z-index: 50;
 }
-
 .logo {
 font-family: Georgia, serif;
 font-style: italic;
-font-size: 1.7rem;
+font-size: 1.6rem;
 color: #f0f0f0;
+letter-spacing: 0.01em;
 }
-
 .logo b { color: #ff4d00; font-style: normal; }
-
 .badge {
-font-size: 0.6rem;
-letter-spacing: 0.25em;
-color: #555;
+font-size: 0.58rem;
+letter-spacing: 0.22em;
+color: #444;
 text-transform: uppercase;
 display: flex;
 align-items: center;
 gap: 7px;
 }
-
 .dot {
-width: 6px; height: 6px;
-border-radius: 50%;
+width: 6px; height: 6px; border-radius: 50%;
 background: #39ff7a;
 box-shadow: 0 0 6px #39ff7a;
 animation: blink 2s ease-in-out infinite;
 flex-shrink: 0;
 }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
 
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-
-main {
-max-width: 900px;
-margin: 0 auto;
-padding: 28px 16px 60px;
+/* ── NAV TABS ── */
+.nav {
+display: flex;
+border-bottom: 1px solid #1e1e1e;
+background-color: #0f0f0f;
 }
+.nav-tab {
+font-family: ‘Courier New’, monospace;
+font-size: 0.68rem;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+padding: 11px 22px;
+border: none;
+background: transparent;
+color: #444;
+cursor: pointer;
+border-bottom: 2px solid transparent;
+transition: color .15s, border-color .15s;
+}
+.nav-tab:hover { color: #888; }
+.nav-tab.on { color: #ff4d00; border-bottom-color: #ff4d00; }
 
+/* ── PAGES ── */
+.page { display: none; }
+.page.on { display: block; }
+
+/* ── MAIN ── */
+main { max-width: 960px; margin: 0 auto; padding: 26px 16px 70px; }
+
+/* ── LANG BAR ── */
 .lang-bar {
 display: flex;
 align-items: stretch;
-border: 1px solid #2a2a2a;
+border: 1px solid #222;
 border-radius: 6px;
 overflow: hidden;
-margin-bottom: 16px;
-background-color: #161616;
+margin-bottom: 14px;
+background-color: #151515;
 }
-
 .lang-side {
 flex: 1;
 display: flex;
 align-items: center;
 gap: 4px;
-padding: 8px 10px;
+padding: 7px 9px;
 flex-wrap: wrap;
 }
-
 .lbtn {
 font-family: ‘Courier New’, monospace;
-font-size: 0.72rem;
+font-size: 0.68rem;
 letter-spacing: 0.1em;
-padding: 6px 14px;
-border: 1px solid #333;
+padding: 6px 13px;
+border: 1px solid #2a2a2a;
 border-radius: 4px;
 background: transparent;
-color: #666;
+color: #555;
 cursor: pointer;
 text-transform: uppercase;
-transition: background 0.15s, color 0.15s, border-color 0.15s;
+transition: background .15s, color .15s, border-color .15s;
 }
-
-.lbtn:hover { color: #ccc; border-color: #555; background: #1e1e1e; }
+.lbtn:hover { color: #bbb; border-color: #444; background: #1c1c1c; }
 .lbtn.on { background-color: #ff4d00; color: #fff; border-color: #ff4d00; }
-
 .swap-wrap {
 display: flex;
 align-items: center;
 justify-content: center;
 padding: 0 8px;
-border-left: 1px solid #2a2a2a;
-border-right: 1px solid #2a2a2a;
-background-color: #1a1a1a;
+border-left: 1px solid #222;
+border-right: 1px solid #222;
+background-color: #181818;
 }
-
 .sbtn {
-width: 40px; height: 40px;
-background: #222;
-border: 1px solid #333;
+width: 38px; height: 38px;
+background: #1e1e1e;
+border: 1px solid #2a2a2a;
 border-radius: 4px;
-color: #888;
-font-size: 1rem;
+color: #666;
+font-size: .9rem;
 cursor: pointer;
 display: flex;
 align-items: center;
 justify-content: center;
-transition: color 0.15s, border-color 0.15s, background 0.15s;
+transition: color .15s, border-color .15s, background .15s;
 }
+.sbtn:hover { color: #ff4d00; border-color: #ff4d00; background: #161616; }
 
-.sbtn:hover { color: #ff4d00; border-color: #ff4d00; background: #1a1a1a; }
-
+/* ── PANELS ── */
 .panels {
 display: grid;
 grid-template-columns: 1fr 1fr;
-border: 1px solid #2a2a2a;
+border: 1px solid #222;
 border-radius: 6px;
 overflow: hidden;
-min-height: 240px;
 }
-
-@media (max-width: 580px) {
+@media(max-width:560px){
 .panels { grid-template-columns: 1fr; }
-.panel-left { border-right: none !important; border-bottom: 1px solid #2a2a2a; }
+.panel-left { border-right: none !important; border-bottom: 1px solid #222; }
 }
-
 .panel-left, .panel-right {
 display: flex;
 flex-direction: column;
-background-color: #131313;
+background-color: #111;
 }
-
-.panel-left { border-right: 1px solid #2a2a2a; }
-
+.panel-left { border-right: 1px solid #222; }
 .panel-head {
-background-color: #1a1a1a;
-border-bottom: 1px solid #2a2a2a;
-padding: 9px 14px;
+background-color: #181818;
+border-bottom: 1px solid #222;
+padding: 8px 14px;
 display: flex;
 justify-content: space-between;
 align-items: center;
 }
-
-.plabel { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; }
-.pcount { font-size: 0.6rem; color: #444; }
-
+.plabel { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #444; }
+.pcount { font-size: 0.58rem; color: #333; }
 textarea {
 flex: 1;
 background: transparent;
 border: none;
 outline: none;
-padding: 18px;
+padding: 16px;
 font-family: ‘Courier New’, monospace;
-font-size: 0.95rem;
-color: #e0e0e0;
+font-size: 0.92rem;
+color: #d8d8d8;
 resize: none;
 line-height: 1.7;
-min-height: 200px;
+min-height: 190px;
 caret-color: #ff4d00;
 }
-
-textarea::placeholder { color: #3a3a3a; font-style: italic; }
-
+textarea::placeholder { color: #2e2e2e; font-style: italic; }
 .output {
 flex: 1;
-padding: 18px;
+padding: 16px;
 font-family: ‘Courier New’, monospace;
-font-size: 0.95rem;
+font-size: 0.92rem;
 line-height: 1.7;
-min-height: 200px;
+min-height: 190px;
 color: #39ff7a;
 position: relative;
 overflow-y: auto;
 word-break: break-word;
 }
+.output.empty { color: #2a2a2a; font-style: italic; }
+.output.empty .cpbtn { display: none; }
 
-.output.empty { color: #3a3a3a; font-style: italic; }
-
+/* ── ACTIONS ── */
 .actions {
 display: flex;
 justify-content: center;
 gap: 10px;
-margin-top: 16px;
+margin-top: 14px;
 }
-
 .tbtn {
 font-family: Georgia, serif;
 font-style: italic;
-font-size: 1rem;
-letter-spacing: 0.15em;
-padding: 12px 48px;
+font-size: 0.95rem;
+letter-spacing: 0.18em;
+padding: 11px 46px;
 background-color: #ff4d00;
 color: #fff;
 border: none;
 border-radius: 4px;
 cursor: pointer;
-transition: background 0.15s, transform 0.1s;
+transition: background .15s, transform .1s;
 }
-
 .tbtn:hover { background-color: #ff6620; }
 .tbtn:active { transform: scale(0.98); }
-
 .xbtn {
 font-family: ‘Courier New’, monospace;
-font-size: 0.7rem;
-letter-spacing: 0.1em;
+font-size: 0.65rem;
+letter-spacing: 0.12em;
 text-transform: uppercase;
-padding: 12px 20px;
+padding: 11px 18px;
 background: transparent;
-color: #555;
-border: 1px solid #2a2a2a;
+color: #444;
+border: 1px solid #222;
 border-radius: 4px;
 cursor: pointer;
-transition: color 0.15s, border-color 0.15s;
+transition: color .15s, border-color .15s;
 }
-
-.xbtn:hover { color: #aaa; border-color: #555; }
-
+.xbtn:hover { color: #999; border-color: #555; }
 .hint {
 text-align: center;
-margin-top: 10px;
-font-size: 0.58rem;
-letter-spacing: 0.15em;
+margin-top: 8px;
+font-size: 0.55rem;
+letter-spacing: 0.16em;
+color: #2a2a2a;
+text-transform: uppercase;
+}
+
+/* ── COPY BTN ── */
+.cpbtn {
+position: absolute;
+bottom: 9px; right: 9px;
+font-family: ‘Courier New’, monospace;
+font-size: 0.55rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+padding: 4px 10px;
+background: transparent;
 color: #333;
-text-transform: uppercase;
+border: 1px solid #222;
+border-radius: 3px;
+cursor: pointer;
+transition: color .15s, border-color .15s;
+opacity: 0;
 }
+.output:hover .cpbtn { opacity: 1; }
+.cpbtn:hover { color: #39ff7a; border-color: #39ff7a; }
 
-.dict-section { margin-top: 52px; }
+/* ══════════════════════════════════
+DICTIONARY PAGE
+══════════════════════════════════ */
+.dict-page main { padding-top: 20px; }
 
-.dict-title {
-font-family: Georgia, serif;
-font-style: italic;
-font-size: 1.5rem;
-color: #ccc;
-margin-bottom: 4px;
-display: flex;
-align-items: center;
-gap: 14px;
+/* Search */
+.dict-search-wrap {
+position: relative;
+margin-bottom: 18px;
 }
-
-.dict-title::after { content:’’; flex:1; height:1px; background:#2a2a2a; }
-
-.dict-sub {
+.dict-search {
+width: 100%;
+background: #111;
+border: 1px solid #222;
+border-radius: 6px;
+padding: 11px 16px 11px 40px;
+font-family: ‘Courier New’, monospace;
+font-size: 0.88rem;
+color: #d8d8d8;
+outline: none;
+transition: border-color .15s;
+caret-color: #ff4d00;
+}
+.dict-search::placeholder { color: #333; font-style: italic; }
+.dict-search:focus { border-color: #333; }
+.dict-search-icon {
+position: absolute;
+left: 13px;
+top: 50%;
+transform: translateY(-50%);
+color: #333;
+font-size: 0.9rem;
+pointer-events: none;
+}
+.dict-search-count {
+position: absolute;
+right: 14px;
+top: 50%;
+transform: translateY(-50%);
 font-size: 0.58rem;
-letter-spacing: 0.2em;
-color: #444;
+letter-spacing: 0.12em;
+color: #333;
+}
+
+/* Category filters */
+.cat-filters {
+display: flex;
+gap: 6px;
+flex-wrap: wrap;
+margin-bottom: 18px;
+}
+.catf {
+font-family: ‘Courier New’, monospace;
+font-size: 0.62rem;
+letter-spacing: 0.1em;
 text-transform: uppercase;
-margin-bottom: 20px;
+padding: 5px 12px;
+border: 1px solid #222;
+border-radius: 20px;
+background: transparent;
+color: #444;
+cursor: pointer;
+transition: all .15s;
 }
+.catf:hover { color: #aaa; border-color: #444; }
+.catf.on { background: #1e1e1e; color: #ff8c42; border-color: #ff4d00; }
 
-.dict-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-gap: 8px;
-}
-
-.dcat {
-background-color: #131313;
-border: 1px solid #2a2a2a;
-border-radius: 5px;
+/* Dict table */
+.dict-table-wrap {
+border: 1px solid #1e1e1e;
+border-radius: 6px;
 overflow: hidden;
 }
-
-.dcat-head {
-background-color: #1a1a1a;
-border-bottom: 1px solid #2a2a2a;
-padding: 7px 12px;
+.dict-table {
+width: 100%;
+border-collapse: collapse;
+}
+.dict-table thead tr {
+background: #181818;
+border-bottom: 1px solid #222;
+}
+.dict-table th {
+padding: 8px 14px;
 font-size: 0.58rem;
-letter-spacing: 0.2em;
+letter-spacing: 0.22em;
 text-transform: uppercase;
-color: #ff8c42;
+color: #444;
+text-align: left;
+font-weight: normal;
 }
-
-.dentry {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 5px 12px;
+.dict-table tbody tr {
+border-bottom: 1px solid #181818;
 cursor: pointer;
-transition: background 0.1s;
-gap: 8px;
+transition: background .1s;
+}
+.dict-table tbody tr:last-child { border-bottom: none; }
+.dict-table tbody tr:hover { background: #161616; }
+.dict-table td { padding: 7px 14px; }
+.td-ru { font-size: 0.82rem; color: #888; }
+.td-95 { font-size: 0.82rem; color: #39ff7a; font-weight: bold; letter-spacing: 0.04em; }
+.td-en { font-size: 0.75rem; color: #444; }
+.td-cat {
+font-size: 0.55rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: #333;
+}
+.empty-msg {
+padding: 32px;
+text-align: center;
+font-size: 0.75rem;
+color: #333;
+font-style: italic;
 }
 
-.dentry:hover { background-color: #1a1a1a; }
-.dru { font-size: 0.8rem; color: #666; }
-.d95 { font-size: 0.78rem; color: #39ff7a; font-weight: bold; }
-
+/* ── TOAST ── */
 .toast {
 position: fixed;
-bottom: 28px;
+bottom: 26px;
 left: 50%;
 transform: translateX(-50%) translateY(70px);
 background-color: #1a1a1a;
 border: 1px solid #ff4d00;
-color: #e0e0e0;
-font-size: 0.7rem;
+color: #d8d8d8;
+font-size: 0.68rem;
 letter-spacing: 0.12em;
 padding: 9px 22px;
 border-radius: 4px;
-transition: transform 0.25s ease;
+transition: transform .25s ease;
 z-index: 999;
 white-space: nowrap;
 }
-
 .toast.show { transform: translateX(-50%) translateY(0); }
-
-.cpbtn {
-position: absolute;
-bottom: 10px; right: 10px;
-font-family: ‘Courier New’, monospace;
-font-size: 0.58rem;
-letter-spacing: 0.1em;
-text-transform: uppercase;
-padding: 5px 12px;
-background: transparent;
-color: #444;
-border: 1px solid #2a2a2a;
-border-radius: 3px;
-cursor: pointer;
-transition: color 0.15s, border-color 0.15s;
-opacity: 0;
-}
-
-.output:hover .cpbtn { opacity: 1; }
-.cpbtn:hover { color: #39ff7a; border-color: #39ff7a; }
 </style>
 
 </head>
@@ -345,6 +406,14 @@ opacity: 0;
   <div class="badge"><span class="dot"></span>словарь активен</div>
 </header>
 
+<div class="nav">
+  <button class="nav-tab on" onclick="showPage('translate',this)">Переводчик</button>
+  <button class="nav-tab" onclick="showPage('dictionary',this)">Словарь</button>
+</div>
+
+<!-- ════════ ПЕРЕВОДЧИК ════════ -->
+
+<div id="page-translate" class="page on">
 <main>
   <div class="lang-bar">
     <div class="lang-side" id="from-side">
@@ -386,64 +455,765 @@ opacity: 0;
     <button class="tbtn" onclick="doTranslate()">Перевести</button>
   </div>
   <p class="hint">ctrl + enter — быстрый перевод</p>
+</main>
+</div>
 
-  <div class="dict-section">
-    <div class="dict-title">Словарь</div>
-    <div class="dict-sub">// нажмите слово — вставится в поле</div>
-    <div class="dict-grid" id="dgrid"></div>
+<!-- ════════ СЛОВАРЬ ════════ -->
+
+<div id="page-dictionary" class="page">
+<main>
+  <div class="dict-search-wrap">
+    <span class="dict-search-icon">⌕</span>
+    <input type="search" class="dict-search" id="dict-search"
+      placeholder="Найти слово на русском, английском или 95..."
+      oninput="filterDict()">
+    <span class="dict-search-count" id="dict-count"></span>
+  </div>
+  <div class="cat-filters" id="cat-filters"></div>
+  <div class="dict-table-wrap">
+    <table class="dict-table">
+      <thead>
+        <tr>
+          <th>Русский</th>
+          <th>Язык 95</th>
+          <th>English</th>
+          <th>Раздел</th>
+        </tr>
+      </thead>
+      <tbody id="dict-body"></tbody>
+    </table>
   </div>
 </main>
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-var RU95 = {
-  "я":"ya","ты":"tu","он":"var","она":"vera","оно":"nev","вы":"vos",
-  "привет":"varel","пока":"norix","как дела":"tavek","хорошо":"zenor",
-  "плохо":"drask","спасибо":"elvar","пожалуйста":"merok","да":"va","нет":"nox",
-  "дом":"kvar","жопа":"gorn","язык":"lath","хуйня":"shrak",
-  "вода":"lini","машина":"vokar","телефон":"tekra","музыка":"jareth",
-  "плыть":"norvek","плывете":"norvekt","утонул":"drenor",
-  "захлебнулся":"skelvar","умри":"drax","умереть":"draxor",
-  "умер":"draven","идти":"go","есть":"eat","пить":"drin",
-  "отвали":"kraz","уйди":"kror","заткнись":"zark","враг":"vrak",
-  "хаос":"xarn","конец":"nork","достал":"krenz","исчезни":"drak",
-  "любовь":"luv","страх":"fear","радость":"joy","жизнь":"lif",
-  "свет":"lux","тьма":"dark","это":"dex","человек":"kren","друг":"varo"
-};
+// ══════════════════════════════════════════
+// ПОЛНЫЙ СЛОВАРЬ ЯЗЫК 95
+// ══════════════════════════════════════════
+var DICT_DATA = [
+  // [ru, 95, en, category]
 
-var EN95 = {
-  "i":"ya","you":"tu","he":"var","she":"vera","it":"nev",
-  "hello":"varel","bye":"norix","how are you":"tavek","good":"zenor",
-  "bad":"drask","thank you":"elvar","please":"merok","yes":"va","no":"nox",
-  "home":"kvar","language":"lath","water":"lini","car":"vokar",
-  "phone":"tekra","music":"jareth","swim":"norvek","drowned":"drenor",
-  "die":"draxor","go":"go","eat":"eat","drink":"drin",
-  "get lost":"kraz","go away":"kror","shut up":"zark","enemy":"vrak",
-  "chaos":"xarn","end":"nork","this":"dex","person":"kren","friend":"varo",
-  "love":"luv","fear":"fear","joy":"joy","life":"lif","light":"lux","dark":"dark"
-};
+  // МЕСТОИМЕНИЯ
+  ["я","ya","i","Местоимения"],
+  ["ты","tu","you","Местоимения"],
+  ["он","var","he","Местоимения"],
+  ["она","vera","she","Местоимения"],
+  ["оно","nev","it","Местоимения"],
+  ["мы","vari","we","Местоимения"],
+  ["вы","vos","you (pl)","Местоимения"],
+  ["они","varen","they","Местоимения"],
+  ["меня","yam","me","Местоимения"],
+  ["тебя","tum","you (acc)","Местоимения"],
+  ["его","varm","him","Местоимения"],
+  ["её","veram","her","Местоимения"],
+  ["нас","varim","us","Местоимения"],
+  ["вас","vosm","you (pl acc)","Местоимения"],
+  ["их","varenm","them","Местоимения"],
+  ["мне","yav","me (dat)","Местоимения"],
+  ["себя","selv","oneself","Местоимения"],
+  ["этот","dexar","this","Местоимения"],
+  ["это","dex","this","Местоимения"],
+  ["эти","dexen","these","Местоимения"],
+  ["тот","taxar","that","Местоимения"],
+  ["те","taxen","those","Местоимения"],
+  ["все","omvar","everyone","Местоимения"],
+  ["каждый","keldex","each","Местоимения"],
+  ["никто","noxvar","nobody","Местоимения"],
+  ["ничто","noxnev","nothing","Местоимения"],
+  ["кто","kelvar","who","Местоимения"],
+  ["что","kelnev","what","Местоимения"],
+  ["какой","kelak","which","Местоимения"],
+  ["который","keltor","which (rel)","Местоимения"],
 
-var R95 = {}, R95EN = {};
-for (var k in RU95) R95[RU95[k]] = k;
-for (var k in EN95) R95EN[EN95[k]] = k;
+  // ЧИСЛА
+  ["ноль","zeron","zero","Числа"],
+  ["один","unar","one","Числа"],
+  ["два","binar","two","Числа"],
+  ["три","trinar","three","Числа"],
+  ["четыре","kvarat","four","Числа"],
+  ["пять","pentar","five","Числа"],
+  ["шесть","sexar","six","Числа"],
+  ["семь","septar","seven","Числа"],
+  ["восемь","oktar","eight","Числа"],
+  ["девять","novar","nine","Числа"],
+  ["десять","dekar","ten","Числа"],
+  ["двадцать","bindekar","twenty","Числа"],
+  ["сто","centar","hundred","Числа"],
+  ["тысяча","milvar","thousand","Числа"],
+  ["первый","unarik","first","Числа"],
+  ["второй","binarik","second","Числа"],
+  ["третий","trinarik","third","Числа"],
+  ["последний","finarik","last","Числа"],
+  ["много","multax","many","Числа"],
+  ["мало","raxum","few","Числа"],
+  ["больше","maxor","more","Числа"],
+  ["меньше","minor","less","Числа"],
+  ["половина","halvex","half","Числа"],
+
+  // ВРЕМЯ
+  ["время","tevax","time","Время"],
+  ["час","horar","hour","Время"],
+  ["минута","minar","minute","Время"],
+  ["секунда","sekar","second","Время"],
+  ["день","divar","day","Время"],
+  ["ночь","noktar","night","Время"],
+  ["утро","matvar","morning","Время"],
+  ["вечер","vespar","evening","Время"],
+  ["полдень","midvar","noon","Время"],
+  ["полночь","midnok","midnight","Время"],
+  ["неделя","wekar","week","Время"],
+  ["месяц","menar","month","Время"],
+  ["год","yenar","year","Время"],
+  ["сегодня","naxdivar","today","Время"],
+  ["вчера","prevdivar","yesterday","Время"],
+  ["завтра","nexdivar","tomorrow","Время"],
+  ["понедельник","wekar-un","monday","Время"],
+  ["вторник","wekar-bin","tuesday","Время"],
+  ["среда","wekar-tri","wednesday","Время"],
+  ["четверг","wekar-kvat","thursday","Время"],
+  ["пятница","wekar-pen","friday","Время"],
+  ["суббота","wekar-sex","saturday","Время"],
+  ["воскресенье","wekar-sol","sunday","Время"],
+  ["весна","florax","spring","Время"],
+  ["лето","solvar","summer","Время"],
+  ["осень","falvar","autumn","Время"],
+  ["зима","frixar","winter","Время"],
+  ["давно","longev","long ago","Время"],
+  ["недавно","rexev","recently","Время"],
+  ["поздно","latev","late","Время"],
+  ["рано","prevev","early","Время"],
+  ["сейчас","naxev","now","Время"],
+  ["потом","taxev","later","Время"],
+  ["скоро","nexar","soon","Время"],
+  ["никогда","noxev","never","Время"],
+  ["всегда","omev","always","Время"],
+  ["иногда","vaxev","sometimes","Время"],
+  ["часто","frexon","often","Время"],
+  ["редко","raxon","rarely","Время"],
+
+  // БАЗОВЫЕ
+  ["привет","varel","hello","Базовые"],
+  ["пока","norix","bye","Базовые"],
+  ["как дела","tavek","how are you","Базовые"],
+  ["хорошо","zenor","good","Базовые"],
+  ["плохо","drask","bad","Базовые"],
+  ["спасибо","elvar","thank you","Базовые"],
+  ["пожалуйста","merok","please","Базовые"],
+  ["да","va","yes","Базовые"],
+  ["нет","nox","no","Базовые"],
+  ["может быть","vaxor","maybe","Базовые"],
+  ["конечно","vakron","of course","Базовые"],
+  ["точно","vaktron","exactly","Базовые"],
+  ["ладно","lakvar","alright","Базовые"],
+  ["понятно","klaron","understood","Базовые"],
+  ["хватит","xenor","enough","Базовые"],
+  ["снова","reval","again","Базовые"],
+  ["ещё","morex","more / still","Базовые"],
+  ["уже","jexor","already","Базовые"],
+  ["здесь","hevon","here","Базовые"],
+  ["там","taxon","there","Базовые"],
+  ["везде","omhev","everywhere","Базовые"],
+  ["нигде","noxhev","nowhere","Базовые"],
+  ["куда","kelhev","where (to)","Базовые"],
+  ["откуда","prevhev","where (from)","Базовые"],
+  ["почему","kelkaus","why","Базовые"],
+  ["зачем","kelnok","what for","Базовые"],
+  ["как","kelax","how","Базовые"],
+  ["сколько","kelnum","how much","Базовые"],
+  ["когда","kelev","when","Базовые"],
+
+  // ЛЮДИ
+  ["человек","kren","person","Люди"],
+  ["люди","kreni","people","Люди"],
+  ["мужчина","virkar","man","Люди"],
+  ["женщина","femar","woman","Люди"],
+  ["ребёнок","infar","child","Люди"],
+  ["мальчик","virinfar","boy","Люди"],
+  ["девочка","feminfar","girl","Люди"],
+  ["подросток","yonkar","teenager","Люди"],
+  ["взрослый","maturkar","adult","Люди"],
+  ["старик","senkar","old man","Люди"],
+  ["друг","varo","friend","Люди"],
+  ["враг","vrak","enemy","Люди"],
+  ["незнакомец","noxkren","stranger","Люди"],
+  ["сосед","proxkar","neighbor","Люди"],
+  ["коллега","workvar","colleague","Люди"],
+  ["начальник","bosskar","boss","Люди"],
+  ["король","rexvar","king","Люди"],
+  ["королева","rexfera","queen","Люди"],
+  ["президент","prezvar","president","Люди"],
+  ["солдат","milkar","soldier","Люди"],
+  ["полицейский","lexkar","police","Люди"],
+  ["врач","medkar","doctor","Люди"],
+  ["учитель","dokkar","teacher","Люди"],
+  ["программист","kodekar","programmer","Люди"],
+  ["актёр","aktvar","actor","Люди"],
+
+  // СЕМЬЯ
+  ["мать","mavar","mother","Семья"],
+  ["отец","pavar","father","Семья"],
+  ["родители","parkar","parents","Семья"],
+  ["сын","filvar","son","Семья"],
+  ["дочь","filfera","daughter","Семья"],
+  ["брат","fravar","brother","Семья"],
+  ["сестра","sorvar","sister","Семья"],
+  ["дед","gravar","grandfather","Семья"],
+  ["бабушка","grafera","grandmother","Семья"],
+  ["внук","nevkar","grandson","Семья"],
+  ["внучка","nevfera","granddaughter","Семья"],
+  ["дядя","uncvar","uncle","Семья"],
+  ["тётя","auntfer","aunt","Семья"],
+  ["муж","marxvar","husband","Семья"],
+  ["жена","marxfer","wife","Семья"],
+  ["парень","yonvirkar","boyfriend","Семья"],
+  ["девушка","yonfemkar","girlfriend","Семья"],
+
+  // ТЕЛО
+  ["тело","korpar","body","Тело"],
+  ["голова","kapax","head","Тело"],
+  ["лицо","fasax","face","Тело"],
+  ["глаз","okular","eye","Тело"],
+  ["нос","nasar","nose","Тело"],
+  ["рот","orar","mouth","Тело"],
+  ["зуб","dentar","tooth","Тело"],
+  ["язык","lath","tongue / language","Тело"],
+  ["ухо","aurar","ear","Тело"],
+  ["шея","kolvar","neck","Тело"],
+  ["плечо","sholdar","shoulder","Тело"],
+  ["рука","brakar","arm / hand","Тело"],
+  ["ладонь","palmar","palm","Тело"],
+  ["палец","digitar","finger","Тело"],
+  ["нога","legvar","leg","Тело"],
+  ["колено","genar","knee","Тело"],
+  ["спина","dorsar","back","Тело"],
+  ["живот","ventar","stomach","Тело"],
+  ["грудь","pektor","chest","Тело"],
+  ["сердце","kordar","heart","Тело"],
+  ["кровь","sangvar","blood","Тело"],
+  ["кость","ossar","bone","Тело"],
+  ["кожа","dermar","skin","Тело"],
+  ["волосы","kapillar","hair","Тело"],
+  ["мозг","cerbrar","brain","Тело"],
+  ["мышца","muskar","muscle","Тело"],
+
+  // ЭМОЦИИ
+  ["любовь","luv","love","Эмоции"],
+  ["страх","fear","fear","Эмоции"],
+  ["радость","joy","joy","Эмоции"],
+  ["жизнь","lif","life","Эмоции"],
+  ["свет","lux","light","Эмоции"],
+  ["тьма","dark","darkness","Эмоции"],
+  ["счастье","felvar","happiness","Эмоции"],
+  ["грусть","tristax","sadness","Эмоции"],
+  ["злость","iravar","anger","Эмоции"],
+  ["ненависть","odvar","hatred","Эмоции"],
+  ["удивление","stupax","surprise","Эмоции"],
+  ["стыд","veronax","shame","Эмоции"],
+  ["гордость","orgular","pride","Эмоции"],
+  ["зависть","envidax","envy","Эмоции"],
+  ["тревога","anxvar","anxiety","Эмоции"],
+  ["спокойствие","paxvar","peace","Эмоции"],
+  ["скука","borvar","boredom","Эмоции"],
+  ["усталость","fatigax","fatigue","Эмоции"],
+  ["надежда","spervar","hope","Эмоции"],
+  ["отчаяние","despvar","despair","Эмоции"],
+  ["уверенность","konfivar","confidence","Эмоции"],
+  ["боль","dolar","pain","Эмоции"],
+  ["удовольствие","plazer","pleasure","Эмоции"],
+  ["одиночество","solax","loneliness","Эмоции"],
+  ["тоска","melvar","longing","Эмоции"],
+  ["нежность","tendvar","tenderness","Эмоции"],
+  ["восторг","ekstarav","ecstasy","Эмоции"],
+  ["разочарование","dezarar","disappointment","Эмоции"],
+  ["обида","ofenvar","offense","Эмоции"],
+  ["прощение","pardonav","forgiveness","Эмоции"],
+  ["вина","culpavar","guilt","Эмоции"],
+  ["доверие","konfdar","trust","Эмоции"],
+  ["сомнение","dubvar","doubt","Эмоции"],
+
+  // ДОМ
+  ["дом","kvar","house","Дом"],
+  ["квартира","kvaret","apartment","Дом"],
+  ["комната","roomar","room","Дом"],
+  ["кухня","kukvar","kitchen","Дом"],
+  ["ванная","bavar","bathroom","Дом"],
+  ["туалет","sanvar","toilet","Дом"],
+  ["спальня","dormvar","bedroom","Дом"],
+  ["гостиная","vivvar","living room","Дом"],
+  ["коридор","korvar","hallway","Дом"],
+  ["балкон","balvar","balcony","Дом"],
+  ["подвал","subvar","basement","Дом"],
+  ["крыша","tektvar","roof","Дом"],
+  ["стена","murar","wall","Дом"],
+  ["пол","florar","floor","Дом"],
+  ["потолок","plafonar","ceiling","Дом"],
+  ["дверь","portar","door","Дом"],
+  ["окно","fenvar","window","Дом"],
+  ["лестница","skalvar","stairs","Дом"],
+  ["гараж","garovar","garage","Дом"],
+  ["сад","gardevar","garden","Дом"],
+  ["двор","kortivar","yard","Дом"],
+  ["ключ","klavvar","key","Дом"],
+  ["замок","lokvar","lock","Дом"],
+
+  // ПРЕДМЕТЫ
+  ["вещь","rezvar","thing","Предметы"],
+  ["стол","tablar","table","Предметы"],
+  ["стул","sedivar","chair","Предметы"],
+  ["кровать","lekvar","bed","Предметы"],
+  ["шкаф","armovar","wardrobe","Предметы"],
+  ["диван","sofavar","sofa","Предметы"],
+  ["книга","libvar","book","Предметы"],
+  ["ручка","penvar","pen","Предметы"],
+  ["бумага","papivar","paper","Предметы"],
+  ["деньги","dinar","money","Предметы"],
+  ["кошелёк","borsar","wallet","Предметы"],
+  ["сумка","bolsar","bag","Предметы"],
+  ["рюкзак","mochkar","backpack","Предметы"],
+  ["часы","relokvar","watch","Предметы"],
+  ["нож","naifvar","knife","Предметы"],
+  ["вилка","forkvar","fork","Предметы"],
+  ["ложка","spunvar","spoon","Предметы"],
+  ["тарелка","platvar","plate","Предметы"],
+  ["стакан","glaavar","glass","Предметы"],
+  ["бутылка","botilvar","bottle","Предметы"],
+  ["огонь","firvar","fire","Предметы"],
+  ["вода","lini","water","Предметы"],
+  ["камень","rokvar","stone","Предметы"],
+  ["зеркало","mirvar","mirror","Предметы"],
+  ["оружие","armvar","weapon","Предметы"],
+  ["яд","toxvar","poison","Предметы"],
+  ["лекарство","medvar","medicine","Предметы"],
+  ["монета","monovar","coin","Предметы"],
+  ["машина","vokar","car","Предметы"],
+  ["телефон","tekra","phone","Предметы"],
+  ["компьютер","komputvar","computer","Предметы"],
+  ["музыка","jareth","music","Предметы"],
+  ["звук","sonvar","sound","Предметы"],
+
+  // ОДЕЖДА
+  ["одежда","vextar","clothes","Одежда"],
+  ["рубашка","shertvar","shirt","Одежда"],
+  ["штаны","pantar","pants","Одежда"],
+  ["куртка","jakar","jacket","Одежда"],
+  ["пальто","mantar","coat","Одежда"],
+  ["платье","dresvar","dress","Одежда"],
+  ["обувь","shoevar","shoes","Одежда"],
+  ["ботинки","botavar","boots","Одежда"],
+  ["носки","soxvar","socks","Одежда"],
+  ["шапка","kapvar","hat","Одежда"],
+  ["очки","okulavar","glasses","Одежда"],
+  ["кольцо","rinvar","ring","Одежда"],
+
+  // ЕДА
+  ["еда","foodvar","food","Еда"],
+  ["хлеб","panvar","bread","Еда"],
+  ["мясо","karnar","meat","Еда"],
+  ["рыба","pexvar","fish","Еда"],
+  ["суп","sopvar","soup","Еда"],
+  ["рис","rizvar","rice","Еда"],
+  ["яйцо","ovovar","egg","Еда"],
+  ["молоко","lakvar","milk","Еда"],
+  ["масло","butvar","butter","Еда"],
+  ["сыр","kazvar","cheese","Еда"],
+  ["соль","salvar","salt","Еда"],
+  ["сахар","azuvar","sugar","Еда"],
+  ["чай","tavar","tea","Еда"],
+  ["кофе","kafvar","coffee","Еда"],
+  ["пиво","birvar","beer","Еда"],
+  ["вино","vinovar","wine","Еда"],
+  ["водка","vodkavar","vodka","Еда"],
+  ["сок","jukvar","juice","Еда"],
+  ["яблоко","aplivar","apple","Еда"],
+  ["банан","banavar","banana","Еда"],
+  ["апельсин","oranvar","orange","Еда"],
+  ["помидор","tomavar","tomato","Еда"],
+  ["картофель","patavar","potato","Еда"],
+  ["лук","lunavar","onion","Еда"],
+  ["чеснок","garlvar","garlic","Еда"],
+  ["шоколад","chokvar","chocolate","Еда"],
+  ["торт","kekvar","cake","Еда"],
+  ["конфета","dulvar","candy","Еда"],
+
+  // ПРИРОДА
+  ["природа","naturvar","nature","Природа"],
+  ["земля","terrar","earth","Природа"],
+  ["небо","celar","sky","Природа"],
+  ["море","mavar-lini","sea","Природа"],
+  ["река","fluvar","river","Природа"],
+  ["озеро","lakuvar","lake","Природа"],
+  ["гора","montar","mountain","Природа"],
+  ["лес","sylvar","forest","Природа"],
+  ["поле","kampar","field","Природа"],
+  ["пустыня","deservar","desert","Природа"],
+  ["остров","islar","island","Природа"],
+  ["пляж","beavar","beach","Природа"],
+  ["солнце","solvar","sun","Природа"],
+  ["луна","lunivar","moon","Природа"],
+  ["звезда","stellvar","star","Природа"],
+  ["облако","nubvar","cloud","Природа"],
+  ["дождь","pluvar","rain","Природа"],
+  ["снег","nivar","snow","Природа"],
+  ["ветер","venvar","wind","Природа"],
+  ["гром","tonavar","thunder","Природа"],
+  ["молния","fulmivar","lightning","Природа"],
+  ["тепло","kalvar","warmth","Природа"],
+  ["холод","frixvar","cold","Природа"],
+  ["лёд","gelivar-lini","ice","Природа"],
+  ["туман","nebulvar","fog","Природа"],
+  ["дерево","arbovar","tree","Природа"],
+  ["трава","hervar","grass","Природа"],
+  ["цветок","flovar","flower","Природа"],
+
+  // ЖИВОТНЫЕ
+  ["собака","kanar","dog","Животные"],
+  ["кошка","felivar","cat","Животные"],
+  ["птица","avvar","bird","Животные"],
+  ["змея","serpivar","snake","Животные"],
+  ["конь","ekvivar","horse","Животные"],
+  ["корова","bovivar","cow","Животные"],
+  ["свинья","porcivar","pig","Животные"],
+  ["медведь","orsivar","bear","Животные"],
+  ["волк","lupvar","wolf","Животные"],
+  ["лиса","vulpvar","fox","Животные"],
+  ["заяц","lepovar","rabbit","Животные"],
+  ["мышь","murivar","mouse","Животные"],
+  ["орёл","aquivar","eagle","Животные"],
+
+  // МЕСТО
+  ["улица","stretar","street","Место"],
+  ["дорога","rodar","road","Место"],
+  ["мост","pontar","bridge","Место"],
+  ["здание","edifvar","building","Место"],
+  ["город","urbvar","city","Место"],
+  ["деревня","vilvar","village","Место"],
+  ["страна","natvar","country","Место"],
+  ["мир","mondar","world","Место"],
+
+  // ДЕЙСТВИЯ — ДВИЖЕНИЕ
+  ["идти","go","go","Движение"],
+  ["бежать","runek","run","Движение"],
+  ["прыгать","saltex","jump","Движение"],
+  ["ходить","amblek","walk","Движение"],
+  ["ехать","veiek","drive / ride","Движение"],
+  ["лететь","volek","fly","Движение"],
+  ["плыть","norvek","swim","Движение"],
+  ["плывёте","norvekt","swimming (you)","Движение"],
+  ["падать","kadek","fall","Движение"],
+  ["стоять","statek","stand","Движение"],
+  ["сидеть","sedevek","sit","Движение"],
+  ["лежать","jakvek","lie down","Движение"],
+  ["подниматься","skalvek","climb up","Движение"],
+  ["вернуться","retrek","return","Движение"],
+  ["войти","intrek","enter","Движение"],
+  ["выйти","extek","exit","Движение"],
+  ["открыть","apervek","open","Движение"],
+  ["закрыть","klozvek","close","Движение"],
+  ["бросить","lancek","throw","Движение"],
+  ["поймать","kaptek","catch","Движение"],
+
+  // ДЕЙСТВИЯ — РЕЧЬ
+  ["говорить","sperek","speak","Речь"],
+  ["слушать","audek","listen","Речь"],
+  ["слышать","sentaudek","hear","Речь"],
+  ["смотреть","videk","look","Речь"],
+  ["видеть","sentvidek","see","Речь"],
+  ["читать","lektek","read","Речь"],
+  ["писать","skritek","write","Речь"],
+  ["спрашивать","rogek","ask","Речь"],
+  ["отвечать","respoek","answer","Речь"],
+  ["звонить","fonek","call","Речь"],
+  ["кричать","klavek","shout","Речь"],
+  ["шептать","murmek","whisper","Речь"],
+  ["петь","kantek","sing","Речь"],
+  ["смеяться","ridek","laugh","Речь"],
+  ["плакать","plarvek","cry","Речь"],
+  ["молчать","siltek","be silent","Речь"],
+  ["врать","mentek","lie","Речь"],
+  ["понимать","komprek","understand","Речь"],
+  ["знать","savek","know","Речь"],
+  ["думать","kogivek","think","Речь"],
+  ["помнить","memoek","remember","Речь"],
+  ["забыть","oblitek","forget","Речь"],
+  ["учиться","studek","study","Речь"],
+  ["объяснить","expliek","explain","Речь"],
+  ["рассказать","narrek","tell","Речь"],
+  ["обещать","promek","promise","Речь"],
+  ["угрожать","amenek","threaten","Речь"],
+  ["просить","rokuek","ask (request)","Речь"],
+  ["разрешить","permitek","allow","Речь"],
+  ["запретить","interdek","forbid","Речь"],
+  ["согласиться","akordek","agree","Речь"],
+  ["отказаться","refuzek","refuse","Речь"],
+  ["спорить","disputek","argue","Речь"],
+  ["извиниться","skuzek","apologize","Речь"],
+
+  // ДЕЙСТВИЯ — ЖИЗНЬ
+  ["есть","eat","eat","Жизнь"],
+  ["пить","drin","drink","Жизнь"],
+  ["спать","dormek","sleep","Жизнь"],
+  ["просыпаться","viglek","wake up","Жизнь"],
+  ["дышать","respirek","breathe","Жизнь"],
+  ["жить","vivek","live","Жизнь"],
+  ["умереть","draxor","die","Жизнь"],
+  ["умер","draven","died","Жизнь"],
+  ["умри","drax","die! (command)","Жизнь"],
+  ["утонул","drenor","drowned","Жизнь"],
+  ["захлебнулся","skelvar","choked (in water)","Жизнь"],
+  ["родиться","nasek","be born","Жизнь"],
+  ["расти","kresek","grow","Жизнь"],
+  ["болеть","maladek","be sick","Жизнь"],
+  ["выздоравливать","sanvek","recover","Жизнь"],
+  ["работать","laborek","work","Жизнь"],
+  ["отдыхать","restek","rest","Жизнь"],
+  ["играть","ludek","play","Жизнь"],
+  ["танцевать","dansek","dance","Жизнь"],
+  ["рисовать","pintek","draw","Жизнь"],
+  ["готовить","kukek","cook","Жизнь"],
+  ["строить","konstrex","build","Жизнь"],
+  ["ломать","ruptek","break","Жизнь"],
+  ["покупать","komprek-dinar","buy","Жизнь"],
+  ["продавать","vendek","sell","Жизнь"],
+  ["платить","pagek","pay","Жизнь"],
+  ["воровать","furek","steal","Жизнь"],
+  ["убивать","nekek","kill","Жизнь"],
+  ["бить","perkovek","hit","Жизнь"],
+  ["драться","pugnek","fight","Жизнь"],
+  ["защищать","defendek","defend","Жизнь"],
+  ["нападать","atakek","attack","Жизнь"],
+  ["спасать","salvek","save","Жизнь"],
+  ["помогать","ajudek","help","Жизнь"],
+  ["предавать","tradek","betray","Жизнь"],
+  ["любить","luvek","love","Жизнь"],
+  ["ненавидеть","odavek","hate","Жизнь"],
+  ["хотеть","voltek","want","Жизнь"],
+  ["бояться","fearek","be afraid","Жизнь"],
+  ["искать","cercek","search","Жизнь"],
+  ["найти","trovek","find","Жизнь"],
+  ["потерять","perdek","lose","Жизнь"],
+  ["выбирать","eliktek","choose","Жизнь"],
+  ["решать","dekidek","decide","Жизнь"],
+  ["начинать","inistek","start","Жизнь"],
+  ["заканчивать","finek","finish","Жизнь"],
+  ["менять","kambiex","change","Жизнь"],
+  ["создавать","kreavek","create","Жизнь"],
+  ["уничтожать","destroek","destroy","Жизнь"],
+  ["взрываться","explodek","explode","Жизнь"],
+
+  // ПРИЛАГАТЕЛЬНЫЕ
+  ["большой","maxik","big","Прилагательные"],
+  ["маленький","minik","small","Прилагательные"],
+  ["высокий","altik","tall","Прилагательные"],
+  ["низкий","basik","low","Прилагательные"],
+  ["длинный","longik","long","Прилагательные"],
+  ["короткий","brevik","short","Прилагательные"],
+  ["широкий","largik","wide","Прилагательные"],
+  ["узкий","strentik","narrow","Прилагательные"],
+  ["толстый","krasik","thick / fat","Прилагательные"],
+  ["тонкий","tenutik","thin","Прилагательные"],
+  ["тяжёлый","gravarik","heavy","Прилагательные"],
+  ["лёгкий","levitik","light","Прилагательные"],
+  ["острый","akutik","sharp","Прилагательные"],
+  ["тупой","obtuzik","blunt","Прилагательные"],
+  ["хороший","zenik","good","Прилагательные"],
+  ["плохой","draskik","bad","Прилагательные"],
+  ["красивый","bellik","beautiful","Прилагательные"],
+  ["уродливый","brutik","ugly","Прилагательные"],
+  ["умный","sapik","smart","Прилагательные"],
+  ["глупый","stultik","stupid","Прилагательные"],
+  ["сильный","fortik","strong","Прилагательные"],
+  ["слабый","deblik","weak","Прилагательные"],
+  ["быстрый","rapidik","fast","Прилагательные"],
+  ["медленный","lentik","slow","Прилагательные"],
+  ["новый","novik","new","Прилагательные"],
+  ["старый","vetik","old","Прилагательные"],
+  ["молодой","yonik","young","Прилагательные"],
+  ["свежий","fresik","fresh","Прилагательные"],
+  ["чистый","mundik","clean","Прилагательные"],
+  ["грязный","sordik","dirty","Прилагательные"],
+  ["тихий","kalmik","quiet","Прилагательные"],
+  ["громкий","altasonik","loud","Прилагательные"],
+  ["горячий","kalik","hot","Прилагательные"],
+  ["холодный","frigik","cold","Прилагательные"],
+  ["твёрдый","durik","hard","Прилагательные"],
+  ["мягкий","mollik","soft","Прилагательные"],
+  ["живой","vivik","alive","Прилагательные"],
+  ["мёртвый","mortevik","dead","Прилагательные"],
+  ["настоящий","realik","real","Прилагательные"],
+  ["ложный","falsik","false","Прилагательные"],
+  ["важный","importik","important","Прилагательные"],
+  ["опасный","periclik","dangerous","Прилагательные"],
+  ["безопасный","sekurik","safe","Прилагательные"],
+  ["странный","strannik","strange","Прилагательные"],
+  ["нормальный","normalik","normal","Прилагательные"],
+  ["свободный","liberik","free","Прилагательные"],
+  ["готовый","preptik","ready","Прилагательные"],
+  ["сломанный","ruptik","broken","Прилагательные"],
+  ["пустой","vakovar","empty","Прилагательные"],
+  ["полный","plenik","full","Прилагательные"],
+  ["богатый","rikvik","rich","Прилагательные"],
+  ["бедный","pauvik","poor","Прилагательные"],
+  ["счастливый","felivik","happy","Прилагательные"],
+  ["злой","malik","evil / angry","Прилагательные"],
+  ["добрый","bontik","kind","Прилагательные"],
+  ["честный","honesik","honest","Прилагательные"],
+  ["лживый","falsenik","lying","Прилагательные"],
+  ["храбрый","bravarik","brave","Прилагательные"],
+  ["трусливый","timivik","cowardly","Прилагательные"],
+
+  // ЦВЕТА
+  ["красный","roszik","red","Цвета"],
+  ["синий","bluzik","blue","Цвета"],
+  ["зелёный","verdik","green","Цвета"],
+  ["жёлтый","amarik","yellow","Цвета"],
+  ["белый","blanik","white","Цвета"],
+  ["чёрный","negrik","black","Цвета"],
+  ["серый","grizik","grey","Цвета"],
+  ["коричневый","brunik","brown","Цвета"],
+  ["оранжевый","oranik","orange","Цвета"],
+  ["фиолетовый","violik","purple","Цвета"],
+  ["розовый","rosaik","pink","Цвета"],
+  ["золотой","aurik","gold","Цвета"],
+  ["серебряный","argentik","silver","Цвета"],
+
+  // СЛЕНГ
+  ["отвали","kraz","get lost","Сленг"],
+  ["уйди","kror","go away","Сленг"],
+  ["заткнись","zark","shut up","Сленг"],
+  ["исчезни","drak","disappear","Сленг"],
+  ["достал","krenz","annoyed","Сленг"],
+  ["хаос","xarn","chaos","Сленг"],
+  ["конец","nork","end / done","Сленг"],
+  ["хуйня","shrak","bullshit","Сленг"],
+  ["жопа","gorn","ass / trouble","Сленг"],
+  ["идиот","stupvar","idiot","Сленг"],
+  ["дурак","foltvar","fool","Сленг"],
+  ["урод","brutvar","freak","Сленг"],
+  ["ублюдок","bastavar","bastard","Сленг"],
+  ["предатель","tradvar","traitor","Сленг"],
+  ["трус","timivar","coward","Сленг"],
+  ["лжец","mensvar","liar","Сленг"],
+  ["мразь","skumvar","scum","Сленг"],
+  ["ненормальный","krazvar","crazy one","Сленг"],
+  ["псих","lokuvar","psycho","Сленг"],
+  ["слабак","deblivar","weakling","Сленг"],
+  ["нытик","plorvar","whiner","Сленг"],
+  ["облажался","floppex","messed up","Сленг"],
+  ["жалкий","patevar","pathetic","Сленг"],
+  ["отстань","krar","leave me alone","Сленг"],
+  ["засохни","sekvar","dry up","Сленг"],
+  ["молчи","silvar","silence (command)","Сленг"],
+  ["надоел","fatigenex","sick of you","Сленг"],
+  ["пошёл нахуй","drax-gorn","fuck off","Сленг"],
+  ["вали отсюда","eks-hevon","get out of here","Сленг"],
+  ["не трогай","nox-takek","don't touch","Сленг"],
+  ["ноль без палочки","zeron-var","nobody / zero","Сленг"],
+
+  // ПРЕДЛОГИ
+  ["в","en","in","Предлоги"],
+  ["на","sur","on","Предлоги"],
+  ["с","kon","with","Предлоги"],
+  ["без","nox-kon","without","Предлоги"],
+  ["за","pos","behind / for","Предлоги"],
+  ["перед","prev","before","Предлоги"],
+  ["после","post","after","Предлоги"],
+  ["до","prevak","until","Предлоги"],
+  ["из","dex-en","from","Предлоги"],
+  ["к","ad","to","Предлоги"],
+  ["от","ab","from","Предлоги"],
+  ["под","sub","under","Предлоги"],
+  ["над","sup","above","Предлоги"],
+  ["между","inter","between","Предлоги"],
+  ["через","trans","through","Предлоги"],
+  ["для","por","for","Предлоги"],
+  ["из-за","kaus","because of","Предлоги"],
+  ["и","el","and","Предлоги"],
+  ["или","ov","or","Предлоги"],
+  ["но","ma","but","Предлоги"],
+  ["если","si","if","Предлоги"],
+  ["потому что","kauze","because","Предлоги"],
+  ["чтобы","por-ke","in order to","Предлоги"],
+  ["хотя","kiam","although","Предлоги"],
+
+  // ФРАЗЫ
+  ["не знаю","nox savek","I don't know","Фразы"],
+  ["не понимаю","nox komprek","I don't understand","Фразы"],
+  ["помогите","ajudek-ya","help me","Фразы"],
+  ["подождите","expektek","wait","Фразы"],
+  ["осторожно","kauvar","careful","Фразы"],
+  ["стоп","stopvar","stop","Фразы"],
+  ["всё","finvar","that's all","Фразы"],
+  ["ничего","noxvar","nothing","Фразы"],
+  ["не важно","nox importik","doesn't matter","Фразы"],
+  ["на самом деле","realvar","actually","Фразы"],
+  ["до свидания","norix-varim","goodbye","Фразы"],
+  ["будь здоров","vivek-zenor","be well","Фразы"],
+  ["удачи","fortunax","good luck","Фразы"],
+  ["прости","skuzek-ya","sorry","Фразы"],
+  ["я люблю тебя","ya luvek tu","I love you","Фразы"],
+  ["я тебя ненавижу","ya odavek tu","I hate you","Фразы"],
+  ["заткнись и иди","zark el go","shut up and go","Фразы"],
+  ["пошли","go-vari","let's go","Фразы"],
+  ["держись","tenvar","hold on","Фразы"],
+  ["не сдавайся","nox kapitulvek","don't give up","Фразы"],
+  ["мне плохо","ya sentir draskik","I feel bad","Фразы"],
+  ["мне хорошо","ya sentir zenik","I feel good","Фразы"],
+  ["хочу есть","ya voltek eat","I want to eat","Фразы"],
+  ["хочу пить","ya voltek drin","I want to drink","Фразы"],
+  ["хочу спать","ya voltek dormek","I want to sleep","Фразы"],
+  ["где ты","kelvar tu","where are you","Фразы"],
+  ["кто ты","kelvar-tu","who are you","Фразы"],
+  ["что это","kelnev dex","what is this","Фразы"],
+  ["иди сюда","go ad-hevon","come here","Фразы"],
+  ["не ходи туда","nox go taxon","don't go there","Фразы"],
+  ["помоги мне","ajudek yam","help me","Фразы"],
+  ["оставь меня","krar yam","leave me alone","Фразы"],
+  ["я иду","ya go","I'm going","Фразы"],
+  ["я здесь","ya hevon","I'm here","Фразы"],
+  ["я ухожу","ya eksek","I'm leaving","Фразы"],
+  ["я вернусь","ya retrek","I'll be back","Фразы"],
+  ["не уходи","nox eksek","don't leave","Фразы"],
+  ["подожди меня","expektek yam","wait for me","Фразы"],
+  ["всё будет хорошо","omnivar futvar zenik","everything will be fine","Фразы"],
+  ["быстрее","maxor-rapidox","faster","Фразы"],
+  ["тише","maxor-kalmox","quieter","Фразы"],
+];
+
+// ══════════════════════════════════════
+// BUILD MAPS FOR TRANSLATION
+// ══════════════════════════════════════
+var RU95 = {}, EN95 = {}, R95 = {}, R95EN = {};
+for (var i = 0; i < DICT_DATA.length; i++) {
+  var e = DICT_DATA[i];
+  var ru = e[0].toLowerCase(), w95 = e[1].toLowerCase(), en = e[2].toLowerCase();
+  RU95[ru] = w95;
+  EN95[en] = w95;
+  if (!R95[w95])   R95[w95]   = ru;
+  if (!R95EN[w95]) R95EN[w95] = en;
+}
 
 var LBLS = {ru:'Русский', en:'English', '95':'Язык 95'};
-var PHS  = {ru:'Введите текст...', en:'Enter text...', '95':'Kren dex lath...'};
+var PHS  = {ru:'Введите текст...', en:'Enter text...', '95':'Kren dex varel...'};
 var FL = 'ru', TL = '95';
 
+// ══════════════════════════════════════
+// TRANSLATION ENGINE
+// ══════════════════════════════════════
 function tw(w, from, to) {
-  if (from==='ru' && to==='95') return RU95[w] !== undefined ? RU95[w] : null;
-  if (from==='95' && to==='ru') return R95[w]  !== undefined ? R95[w]  : null;
-  if (from==='en' && to==='95') return EN95[w] !== undefined ? EN95[w] : null;
-  if (from==='95' && to==='en') return R95EN[w]!== undefined ? R95EN[w]: null;
-  if (from==='ru' && to==='en') { var v=RU95[w]; return (v && R95EN[v]!==undefined) ? R95EN[v] : null; }
-  if (from==='en' && to==='ru') { var v=EN95[w]; return (v && R95[v]  !==undefined) ? R95[v]   : null; }
+  var wl = w.toLowerCase();
+  if (from==='ru' && to==='95') return RU95[wl] !== undefined ? RU95[wl] : null;
+  if (from==='95' && to==='ru') return R95[wl]  !== undefined ? R95[wl]  : null;
+  if (from==='en' && to==='95') return EN95[wl] !== undefined ? EN95[wl] : null;
+  if (from==='95' && to==='en') return R95EN[wl]!== undefined ? R95EN[wl]: null;
+  if (from==='ru' && to==='en') { var v=RU95[wl]; return (v !== undefined && R95EN[v] !== undefined) ? R95EN[v] : null; }
+  if (from==='en' && to==='ru') { var v=EN95[wl]; return (v !== undefined && R95[v]   !== undefined) ? R95[v]   : null; }
   return null;
 }
 
 function translate(text, from, to) {
-  var words = text.toLowerCase().trim().split(/\s+/);
+  var words = text.trim().split(/\s+/);
   var out = [], i = 0;
   while (i < words.length) {
     var hit = false;
@@ -491,12 +1261,15 @@ function esc(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+// ══════════════════════════════════════
+// LANG SWITCHING
+// ══════════════════════════════════════
 function pickLang(side, lang, btn) {
   var other = side==='from' ? 'to' : 'from';
   var otherLang = side==='from' ? TL : FL;
   if (lang === otherLang) {
     var prev = side==='from' ? FL : TL;
-    if (side==='from') TL=prev; else FL=prev;
+    if (other==='from') FL=prev; else TL=prev;
     syncBtns(other);
   }
   if (side==='from') FL=lang; else TL=lang;
@@ -529,52 +1302,101 @@ document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key==='Enter') doTranslate();
 });
 
+// ══════════════════════════════════════
+// PAGE NAVIGATION
+// ══════════════════════════════════════
+function showPage(name, tab) {
+  var pages = document.querySelectorAll('.page');
+  for (var i=0; i<pages.length; i++) pages[i].className = 'page';
+  document.getElementById('page-'+name).className = 'page on';
+  var tabs = document.querySelectorAll('.nav-tab');
+  for (var i=0; i<tabs.length; i++) tabs[i].className = 'nav-tab';
+  tab.className = 'nav-tab on';
+  if (name === 'dictionary') renderDict();
+}
+
+// ══════════════════════════════════════
+// DICTIONARY UI
+// ══════════════════════════════════════
+var activeCat = 'Все';
+var dictRendered = false;
+
+// Build category list
+var CATS = ['Все'];
+for (var i=0; i<DICT_DATA.length; i++) {
+  var c = DICT_DATA[i][3];
+  if (CATS.indexOf(c) === -1) CATS.push(c);
+}
+
+function buildCatFilters() {
+  var el = document.getElementById('cat-filters');
+  for (var i=0; i<CATS.length; i++) {
+    (function(cat){
+      var btn = document.createElement('button');
+      btn.className = 'catf' + (cat === 'Все' ? ' on' : '');
+      btn.textContent = cat;
+      btn.onclick = function() {
+        activeCat = cat;
+        var all = document.querySelectorAll('.catf');
+        for (var j=0; j<all.length; j++) all[j].className = 'catf';
+        this.className = 'catf on';
+        filterDict();
+      };
+      el.appendChild(btn);
+    })(CATS[i]);
+  }
+}
+
+function renderDict() {
+  if (!dictRendered) { buildCatFilters(); dictRendered = true; }
+  filterDict();
+}
+
+function filterDict() {
+  var q = document.getElementById('dict-search').value.toLowerCase().trim();
+  var tbody = document.getElementById('dict-body');
+  var count = 0;
+  var html = '';
+
+  for (var i=0; i<DICT_DATA.length; i++) {
+    var e = DICT_DATA[i];
+    var ru=e[0], w95=e[1], en=e[2], cat=e[3];
+    if (activeCat !== 'Все' && cat !== activeCat) continue;
+    if (q && ru.toLowerCase().indexOf(q)===-1 && w95.toLowerCase().indexOf(q)===-1 && en.toLowerCase().indexOf(q)===-1) continue;
+    count++;
+    html += '<tr onclick="useWord(\''+esc2(ru)+'\')">' +
+      '<td class="td-ru">'+esc(ru)+'</td>' +
+      '<td class="td-95">'+esc(w95)+'</td>' +
+      '<td class="td-en">'+esc(en)+'</td>' +
+      '<td class="td-cat">'+esc(cat)+'</td>' +
+      '</tr>';
+  }
+
+  tbody.innerHTML = count > 0 ? html : '<tr><td colspan="4" class="empty-msg">Ничего не найдено</td></tr>';
+  document.getElementById('dict-count').textContent = count + ' сл.';
+}
+
+function esc2(s) { return s.replace(/'/g,"\\'"); }
+
+function useWord(ru) {
+  showPage('translate', document.querySelector('.nav-tab'));
+  document.getElementById('inp').value = ru;
+  document.getElementById('cnt').textContent = ru.length;
+  // Set from-lang to RU if not already
+  if (FL !== 'ru') { FL='ru'; syncBtns('from'); updateLabels(); }
+  doTranslate();
+  flash('Переведено: ' + ru);
+}
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
 function flash(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg;
   t.className = 'toast show';
   clearTimeout(t._tid);
   t._tid = setTimeout(function(){ t.className = 'toast'; }, 2000);
-}
-
-// Build dictionary
-var CATS = [
-  {name:'Местоимения', words:['я','ты','он','она','оно','вы']},
-  {name:'Базовые',     words:['привет','пока','да','нет','хорошо','плохо','спасибо','пожалуйста']},
-  {name:'Предметы',    words:['дом','вода','машина','телефон','музыка','это']},
-  {name:'Действия',    words:['идти','есть','пить','плыть','умереть','умер','умри','утонул']},
-  {name:'Сленг',       words:['отвали','уйди','заткнись','исчезни','достал','конец','враг','хуйня','жопа']},
-  {name:'Эмоции',      words:['любовь','страх','радость','жизнь','свет','тьма']},
-  {name:'Люди',        words:['человек','друг','язык']}
-];
-
-(function(){
-  var g = document.getElementById('dgrid');
-  for (var i=0; i<CATS.length; i++) {
-    var cat = CATS[i];
-    var html = '<div class="dcat-head">'+cat.name+'</div>';
-    for (var j=0; j<cat.words.length; j++) {
-      var w = cat.words[j];
-      html += '<div class="dentry" onclick="insertWord(\''+w+'\')"><span class="dru">'+w+'</span><span class="d95">'+(RU95[w]||'?')+'</span></div>';
-    }
-    var el = document.createElement('div');
-    el.className = 'dcat';
-    el.innerHTML = html;
-    g.appendChild(el);
-  }
-})();
-
-function insertWord(w) {
-  var word = FL==='95' ? (RU95[w]||w) : w;
-  var el = document.getElementById('inp');
-  var p = el.selectionStart;
-  var before = el.value.slice(0, p);
-  var after  = el.value.slice(p);
-  var sp = (before && before[before.length-1]!==' ') ? ' ' : '';
-  el.value = before + sp + word + ' ' + after;
-  el.focus();
-  document.getElementById('cnt').textContent = el.value.length;
-  flash('Вставлено: ' + word);
 }
 </script>
 
