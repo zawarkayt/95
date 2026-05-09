@@ -5,7 +5,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>95ЛИНГВА — Переводчик</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0f;
@@ -21,10 +20,15 @@
 
 - { margin: 0; padding: 0; box-sizing: border-box; }
 
+html {
+background: #0a0a0f !important;
+}
+
 body {
-background: var(–bg);
+background: #0a0a0f !important;
+background: var(–bg) !important;
 color: var(–text);
-font-family: ‘IBM Plex Sans’, sans-serif;
+font-family: ‘Courier New’, ‘Lucida Console’, monospace;
 min-height: 100vh;
 overflow-x: hidden;
 }
@@ -67,9 +71,10 @@ position: relative;
 }
 
 .logo {
-font-family: ‘Bebas Neue’, cursive;
+font-family: Georgia, ‘Times New Roman’, serif;
+font-style: italic;
 font-size: 2.2rem;
-letter-spacing: 0.08em;
+letter-spacing: 0.04em;
 color: var(–text);
 display: flex;
 align-items: baseline;
@@ -82,7 +87,7 @@ font-size: 2.6rem;
 }
 
 .logo-sub {
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.55rem;
 color: var(–text-dim);
 letter-spacing: 0.3em;
@@ -95,7 +100,7 @@ margin-bottom: 4px;
 display: flex;
 align-items: center;
 gap: 8px;
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.7rem;
 color: var(–text-dim);
 letter-spacing: 0.1em;
@@ -142,7 +147,7 @@ padding: 8px 12px;
 }
 
 .lang-btn {
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.75rem;
 letter-spacing: 0.08em;
 padding: 7px 16px;
@@ -224,7 +229,7 @@ background: var(–surface2);
 }
 
 .pane-lang-label {
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.7rem;
 color: var(–text-dim);
 letter-spacing: 0.2em;
@@ -232,7 +237,7 @@ text-transform: uppercase;
 }
 
 .char-count {
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.65rem;
 color: var(–text-dim);
 }
@@ -243,8 +248,8 @@ background: transparent;
 border: none;
 outline: none;
 padding: 20px;
-font-family: ‘IBM Plex Sans’, sans-serif;
-font-size: 1.05rem;
+font-family: ‘Courier New’, monospace;
+font-size: 1rem;
 color: var(–text);
 resize: none;
 line-height: 1.7;
@@ -263,8 +268,8 @@ background: var(–surface);
 .output-text {
 flex: 1;
 padding: 20px;
-font-family: ‘IBM Plex Sans’, sans-serif;
-font-size: 1.05rem;
+font-family: ‘Courier New’, monospace;
+font-size: 1rem;
 color: var(–green);
 line-height: 1.7;
 min-height: 220px;
@@ -286,8 +291,9 @@ gap: 12px;
 }
 
 .translate-btn {
-font-family: ‘Bebas Neue’, cursive;
-font-size: 1.2rem;
+font-family: Georgia, serif;
+font-style: italic;
+font-size: 1.1rem;
 letter-spacing: 0.15em;
 padding: 14px 52px;
 background: var(–accent);
@@ -325,7 +331,7 @@ transform: translateY(0);
 }
 
 .clear-btn {
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.75rem;
 letter-spacing: 0.1em;
 padding: 14px 24px;
@@ -349,9 +355,10 @@ margin-top: 60px;
 }
 
 .section-title {
-font-family: ‘Bebas Neue’, cursive;
+font-family: Georgia, serif;
+font-style: italic;
 font-size: 1.8rem;
-letter-spacing: 0.1em;
+letter-spacing: 0.05em;
 color: var(–text);
 margin-bottom: 4px;
 display: flex;
@@ -367,7 +374,7 @@ background: var(–border);
 }
 
 .section-sub {
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.65rem;
 color: var(–text-dim);
 letter-spacing: 0.2em;
@@ -392,7 +399,7 @@ overflow: hidden;
 padding: 8px 14px;
 background: var(–surface2);
 border-bottom: 1px solid var(–border);
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.65rem;
 letter-spacing: 0.2em;
 text-transform: uppercase;
@@ -422,7 +429,7 @@ color: var(–text-dim);
 }
 
 .dict-95 {
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.8rem;
 color: var(–green);
 font-weight: 600;
@@ -437,7 +444,7 @@ transform: translateX(-50%) translateY(80px);
 background: var(–surface2);
 border: 1px solid var(–accent);
 color: var(–text);
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.75rem;
 letter-spacing: 0.1em;
 padding: 10px 24px;
@@ -455,7 +462,7 @@ transform: translateX(-50%) translateY(0);
 position: absolute;
 bottom: 12px;
 right: 12px;
-font-family: ‘IBM Plex Mono’, monospace;
+font-family: ‘Courier New’, monospace;
 font-size: 0.65rem;
 letter-spacing: 0.1em;
 padding: 6px 14px;
