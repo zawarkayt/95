@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>95ЛИНГВА — Переводчик</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #ff4d00;
+    --accent2: #ff8c42;
+    --text: #e8e8f0;
+    --text-dim: #6a6a80;
+    --green: #39ff7a;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘IBM Plex Sans’, sans-serif;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* NOISE OVERLAY */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 100;
+opacity: 0.4;
+}
+
+/* SCANLINES */
+body::after {
+content: ‘’;
+position: fixed;
+inset: 0;
+background: repeating-linear-gradient(
+0deg,
+transparent,
+transparent 2px,
+rgba(0,0,0,0.08) 2px,
+rgba(0,0,0,0.08) 4px
+);
+pointer-events: none;
+z-index: 99;
+}
+
+header {
+border-bottom: 1px solid var(–border);
+padding: 0 40px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+height: 64px;
+position: relative;
+}
+
+.logo {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 2.2rem;
+letter-spacing: 0.08em;
+color: var(–text);
+display: flex;
+align-items: baseline;
+gap: 2px;
+}
+
+.logo span {
+color: var(–accent);
+font-size: 2.6rem;
+}
+
+.logo-sub {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.55rem;
+color: var(–text-dim);
+letter-spacing: 0.3em;
+text-transform: uppercase;
+margin-left: 10px;
+margin-bottom: 4px;
+}
+
+.status-dot {
+display: flex;
+align-items: center;
+gap: 8px;
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.7rem;
+color: var(–text-dim);
+letter-spacing: 0.1em;
+}
+
+.status-dot::before {
+content: ‘’;
+width: 7px;
+height: 7px;
+border-radius: 50%;
+background: var(–green);
+box-shadow: 0 0 8px var(–green);
+animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.3; }
+}
+
+.main-container {
+max-width: 1100px;
+margin: 0 auto;
+padding: 48px 24px;
+}
+
+/* LANGUAGE SELECTOR BAR */
+.lang-bar {
+display: flex;
+align-items: center;
+gap: 0;
+margin-bottom: 20px;
+border: 1px solid var(–border);
+border-radius: 4px;
+overflow: hidden;
+background: var(–surface);
+}
+
+.lang-panel {
+flex: 1;
+display: flex;
+gap: 4px;
+padding: 8px 12px;
+}
+
+.lang-btn {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.75rem;
+letter-spacing: 0.08em;
+padding: 7px 16px;
+border: 1px solid transparent;
+border-radius: 3px;
+background: transparent;
+color: var(–text-dim);
+cursor: pointer;
+transition: all 0.15s;
+text-transform: uppercase;
+}
+
+.lang-btn:hover {
+color: var(–text);
+background: var(–surface2);
+}
+
+.lang-btn.active {
+background: var(–accent);
+color: #fff;
+border-color: var(–accent);
+}
+
+.swap-btn {
+width: 56px;
+height: 56px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: var(–surface2);
+border: none;
+border-left: 1px solid var(–border);
+border-right: 1px solid var(–border);
+cursor: pointer;
+color: var(–text-dim);
+font-size: 1.1rem;
+transition: all 0.2s;
+flex-shrink: 0;
+}
+
+.swap-btn:hover {
+color: var(–accent);
+background: var(–surface);
+}
+
+.swap-btn:active {
+transform: rotate(180deg);
+}
+
+/* TRANSLATE AREA */
+.translate-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 0;
+border: 1px solid var(–border);
+border-radius: 4px;
+overflow: hidden;
+min-height: 280px;
+}
+
+.translate-pane {
+background: var(–surface);
+display: flex;
+flex-direction: column;
+position: relative;
+}
+
+.translate-pane:first-child {
+border-right: 1px solid var(–border);
+}
+
+.pane-header {
+padding: 12px 16px;
+border-bottom: 1px solid var(–border);
+display: flex;
+align-items: center;
+justify-content: space-between;
+background: var(–surface2);
+}
+
+.pane-lang-label {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.7rem;
+color: var(–text-dim);
+letter-spacing: 0.2em;
+text-transform: uppercase;
+}
+
+.char-count {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.65rem;
+color: var(–text-dim);
+}
+
+textarea {
+flex: 1;
+background: transparent;
+border: none;
+outline: none;
+padding: 20px;
+font-family: ‘IBM Plex Sans’, sans-serif;
+font-size: 1.05rem;
+color: var(–text);
+resize: none;
+line-height: 1.7;
+min-height: 220px;
+}
+
+textarea::placeholder {
+color: var(–text-dim);
+font-style: italic;
+}
+
+.output-pane {
+background: var(–surface);
+}
+
+.output-text {
+flex: 1;
+padding: 20px;
+font-family: ‘IBM Plex Sans’, sans-serif;
+font-size: 1.05rem;
+color: var(–green);
+line-height: 1.7;
+min-height: 220px;
+position: relative;
+overflow-y: auto;
+}
+
+.output-text.empty {
+color: var(–text-dim);
+font-style: italic;
+}
+
+/* TRANSLATE BUTTON */
+.action-bar {
+display: flex;
+justify-content: center;
+margin-top: 20px;
+gap: 12px;
+}
+
+.translate-btn {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 1.2rem;
+letter-spacing: 0.15em;
+padding: 14px 52px;
+background: var(–accent);
+color: #fff;
+border: none;
+border-radius: 3px;
+cursor: pointer;
+transition: all 0.2s;
+position: relative;
+overflow: hidden;
+}
+
+.translate-btn::before {
+content: ‘’;
+position: absolute;
+top: 0; left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+transition: 0.4s;
+}
+
+.translate-btn:hover::before {
+left: 100%;
+}
+
+.translate-btn:hover {
+background: #ff6620;
+transform: translateY(-1px);
+box-shadow: 0 6px 24px rgba(255,77,0,0.4);
+}
+
+.translate-btn:active {
+transform: translateY(0);
+}
+
+.clear-btn {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.75rem;
+letter-spacing: 0.1em;
+padding: 14px 24px;
+background: transparent;
+color: var(–text-dim);
+border: 1px solid var(–border);
+border-radius: 3px;
+cursor: pointer;
+transition: all 0.2s;
+text-transform: uppercase;
+}
+
+.clear-btn:hover {
+color: var(–text);
+border-color: var(–text-dim);
+}
+
+/* DICTIONARY SECTION */
+.dict-section {
+margin-top: 60px;
+}
+
+.section-title {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 1.8rem;
+letter-spacing: 0.1em;
+color: var(–text);
+margin-bottom: 4px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.section-title::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+
+.section-sub {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.65rem;
+color: var(–text-dim);
+letter-spacing: 0.2em;
+text-transform: uppercase;
+margin-bottom: 24px;
+}
+
+.dict-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+gap: 8px;
+}
+
+.dict-category {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 4px;
+overflow: hidden;
+}
+
+.dict-cat-header {
+padding: 8px 14px;
+background: var(–surface2);
+border-bottom: 1px solid var(–border);
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.65rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–accent2);
+}
+
+.dict-entries {
+padding: 10px 0;
+}
+
+.dict-entry {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 5px 14px;
+cursor: pointer;
+transition: background 0.1s;
+}
+
+.dict-entry:hover {
+background: var(–surface2);
+}
+
+.dict-ru {
+font-size: 0.85rem;
+color: var(–text-dim);
+}
+
+.dict-95 {
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.8rem;
+color: var(–green);
+font-weight: 600;
+}
+
+/* FLASH MESSAGE */
+.flash {
+position: fixed;
+bottom: 24px;
+left: 50%;
+transform: translateX(-50%) translateY(80px);
+background: var(–surface2);
+border: 1px solid var(–accent);
+color: var(–text);
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.75rem;
+letter-spacing: 0.1em;
+padding: 10px 24px;
+border-radius: 3px;
+transition: transform 0.3s ease;
+z-index: 200;
+}
+
+.flash.show {
+transform: translateX(-50%) translateY(0);
+}
+
+/* COPY BUTTON */
+.copy-btn {
+position: absolute;
+bottom: 12px;
+right: 12px;
+font-family: ‘IBM Plex Mono’, monospace;
+font-size: 0.65rem;
+letter-spacing: 0.1em;
+padding: 6px 14px;
+background: transparent;
+color: var(–text-dim);
+border: 1px solid var(–border);
+border-radius: 2px;
+cursor: pointer;
+text-transform: uppercase;
+transition: all 0.15s;
+opacity: 0;
+}
+
+.output-text:hover .copy-btn,
+.copy-btn:focus {
+opacity: 1;
+}
+
+.copy-btn:hover {
+color: var(–green);
+border-color: var(–green);
+}
+
+@media (max-width: 640px) {
+header { padding: 0 16px; }
+.translate-grid { grid-template-columns: 1fr; }
+.translate-pane:first-child { border-right: none; border-bottom: 1px solid var(–border); }
+.main-container { padding: 24px 16px; }
+.logo { font-size: 1.6rem; }
+.logo span { font-size: 2rem; }
+.logo-sub { display: none; }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span>95</span>ЛИНГВА
+    <div class="logo-sub">Translator v1.0</div>
+  </div>
+  <div class="status-dot">СЛОВАРЬ АКТИВЕН</div>
+</header>
+
+<div class="main-container">
+
+  <!-- LANGUAGE BAR -->
+
+  <div class="lang-bar">
+    <div class="lang-panel" id="from-panel">
+      <button class="lang-btn active" data-lang="ru" onclick="setLang('from','ru',this)">RU</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('from','en',this)">EN</button>
+      <button class="lang-btn" data-lang="95" onclick="setLang('from','95',this)">95</button>
+    </div>
+    <button class="swap-btn" onclick="swapLangs()" title="Поменять языки">⇄</button>
+    <div class="lang-panel" id="to-panel">
+      <button class="lang-btn" data-lang="ru" onclick="setLang('to','ru',this)">RU</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('to','en',this)">EN</button>
+      <button class="lang-btn active" data-lang="95" onclick="setLang('to','95',this)">95</button>
+    </div>
+  </div>
+
+  <!-- TRANSLATE BOXES -->
+
+  <div class="translate-grid">
+    <div class="translate-pane">
+      <div class="pane-header">
+        <span class="pane-lang-label" id="from-label">РУССКИЙ</span>
+        <span class="char-count" id="char-count">0 / ∞</span>
+      </div>
+      <textarea id="input-text" placeholder="Введите текст для перевода..." oninput="updateCharCount()"></textarea>
+    </div>
+    <div class="translate-pane output-pane">
+      <div class="pane-header">
+        <span class="pane-lang-label" id="to-label">ЯЗЫК 95</span>
+      </div>
+      <div class="output-text empty" id="output-text">
+        Перевод появится здесь...
+        <button class="copy-btn" onclick="copyOutput()">КОПИРОВАТЬ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+
+  <div class="action-bar">
+    <button class="clear-btn" onclick="clearAll()">Очистить</button>
+    <button class="translate-btn" onclick="doTranslate()">ПЕРЕВЕСТИ</button>
+  </div>
+
+  <!-- DICTIONARY -->
+
+  <div class="dict-section">
+    <div class="section-title">Словарь Языка 95</div>
+    <div class="section-sub">// нажмите на слово, чтобы вставить в поле ввода</div>
+    <div class="dict-grid" id="dict-grid"></div>
+  </div>
+
+</div>
+
+<div class="flash" id="flash"></div>
+
+<script>
+// ===== DICTIONARY =====
+const DICT = {
+  // PRONOUNS
+  "я": "ya", "ты": "tu", "он": "var", "она": "vera", "оно": "nev", "вы": "vos",
+  // BASIC
+  "привет": "varel", "пока": "norix", "как дела": "tavek", "хорошо": "zenor",
+  "плохо": "drask", "спасибо": "elvar", "пожалуйста": "merok", "да": "va", "нет": "nox",
+  // WORLD / OBJECTS
+  "дом": "kvar", "жопа": "gorn", "язык": "lath", "хуйня": "shrak",
+  "вода": "lini", "машина": "vokar", "телефон": "tekra", "музыка": "jareth",
+  // ACTIONS
+  "плыть": "norvek", "плывете": "norvekt", "утонул": "drenor",
+  "захлебнулся": "skelvar", "умри": "drax", "умереть": "draxor",
+  "умер": "draven", "идти": "go", "есть": "eat", "пить": "drin",
+  // SLANG
+  "отвали": "kraz", "уйди": "kror", "заткнись": "zark", "враг": "vrak",
+  "хаос": "xarn", "конец": "nork", "достал": "krenz", "исчезни": "drak",
+  // EMOTIONS
+  "любовь": "luv", "страх": "fear", "радость": "joy", "жизнь": "lif",
+  "свет": "lux", "тьма": "dark",
+  // EXTRA
+  "это": "dex", "человек": "kren", "друг": "varo"
+};
+
+// English equivalents (for EN ↔ 95)
+const DICT_EN = {
+  "i": "ya", "you": "tu", "he": "var", "she": "vera", "it": "nev", "you (pl)": "vos",
+  "hello": "varel", "bye": "norix", "how are you": "tavek", "good": "zenor",
+  "bad": "drask", "thank you": "elvar", "please": "merok", "yes": "va", "no": "nox",
+  "home": "kvar", "language": "lath", "water": "lini", "car": "vokar",
+  "phone": "tekra", "music": "jareth", "swim": "norvek", "drowned": "drenor",
+  "die": "draxor", "go": "go", "eat": "eat", "drink": "drin",
+  "get lost": "kraz", "go away": "kror", "shut up": "zark", "enemy": "vrak",
+  "chaos": "xarn", "end": "nork", "this": "dex", "person": "kren", "friend": "varo",
+  "love": "luv", "fear": "fear", "joy": "joy", "life": "lif", "light": "lux", "dark": "dark"
+};
+
+// Reverse maps
+const DICT_REV = {}; // 95 → RU
+const DICT_EN_REV = {}; // 95 → EN
+for (const [ru, w95] of Object.entries(DICT)) DICT_REV[w95] = ru;
+for (const [en, w95] of Object.entries(DICT_EN)) DICT_EN_REV[w95] = en;
+
+// ===== CATEGORIES for display =====
+const CATEGORIES = [
+  { label: "Местоимения", words: ["я","ты","он","она","оно","вы"] },
+  { label: "Базовые", words: ["привет","пока","да","нет","хорошо","плохо","спасибо","пожалуйста","как дела"] },
+  { label: "Предметы", words: ["дом","вода","машина","телефон","музыка","язык","это"] },
+  { label: "Действия", words: ["идти","есть","пить","плыть","плывете","умереть","умер","умри","утонул","захлебнулся"] },
+  { label: "Сленг", words: ["отвали","уйди","заткнись","исчезни","достал","хаос","конец","враг","хуйня","жопа"] },
+  { label: "Эмоции / Жизнь", words: ["любовь","страх","радость","жизнь","свет","тьма"] },
+  { label: "Люди", words: ["человек","друг"] }
+];
+
+// ===== STATE =====
+let fromLang = 'ru';
+let toLang = '95';
+
+const LANG_LABELS = { ru: 'РУССКИЙ', en: 'ENGLISH', '95': 'ЯЗЫК 95' };
+const LANG_PLACEHOLDERS = {
+  ru: 'Введите текст для перевода...',
+  en: 'Enter text to translate...',
+  '95': 'Kren dex lath...'
+};
+
+// ===== TRANSLATE LOGIC =====
+function translateText(text, from, to) {
+  if (!text.trim()) return '';
+
+  let result = [];
+  const words = text.toLowerCase().trim().split(/\s+/);
+
+  // Handle multi-word phrases first
+  // Try to match phrases of 3, 2, then 1 words
+  let i = 0;
+  while (i < words.length) {
+    let matched = false;
+
+    // Try 3-word phrase
+    if (i + 2 < words.length) {
+      const phrase = words.slice(i, i + 3).join(' ');
+      const t = translateWord(phrase, from, to);
+      if (t !== null) { result.push(t); i += 3; matched = true; }
+    }
+    // Try 2-word phrase
+    if (!matched && i + 1 < words.length) {
+      const phrase = words.slice(i, i + 2).join(' ');
+      const t = translateWord(phrase, from, to);
+      if (t !== null) { result.push(t); i += 2; matched = true; }
+    }
+    // Single word
+    if (!matched) {
+      const t = translateWord(words[i], from, to);
+      result.push(t !== null ? t : `[${words[i]}]`);
+      i++;
+    }
+  }
+
+  return result.join(' ');
+}
+
+function translateWord(word, from, to) {
+  if (from === 'ru' && to === '95') {
+    return DICT[word] !== undefined ? DICT[word] : null;
+  }
+  if (from === '95' && to === 'ru') {
+    return DICT_REV[word] !== undefined ? DICT_REV[word] : null;
+  }
+  if (from === 'en' && to === '95') {
+    return DICT_EN[word] !== undefined ? DICT_EN[word] : null;
+  }
+  if (from === '95' && to === 'en') {
+    return DICT_EN_REV[word] !== undefined ? DICT_EN_REV[word] : null;
+  }
+  // ru ↔ en: basic via 95 as bridge
+  if (from === 'ru' && to === 'en') {
+    const via = DICT[word];
+    return via && DICT_EN_REV[via] ? DICT_EN_REV[via] : null;
+  }
+  if (from === 'en' && to === 'ru') {
+    const via = DICT_EN[word];
+    return via && DICT_REV[via] ? DICT_REV[via] : null;
+  }
+  return null;
+}
+
+function doTranslate() {
+  const input = document.getElementById('input-text').value;
+  const outputEl = document.getElementById('output-text');
+
+  if (!input.trim()) {
+    showFlash('Введите текст!');
+    return;
+  }
+
+  const result = translateText(input, fromLang, toLang);
+
+  outputEl.innerHTML = result
+    ? `${escapeHtml(result)}<button class="copy-btn" onclick="copyOutput()">КОПИРОВАТЬ</button>`
+    : `<span style="color:var(--text-dim); font-style:italic">Ничего не найдено в словаре</span><button class="copy-btn" onclick="copyOutput()">КОПИРОВАТЬ</button>`;
+  outputEl.classList.remove('empty');
+}
+
+// Enter key support
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.ctrlKey) doTranslate();
+});
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function clearAll() {
+  document.getElementById('input-text').value = '';
+  document.getElementById('char-count').textContent = '0 / ∞';
+  const out = document.getElementById('output-text');
+  out.innerHTML = `Перевод появится здесь...<button class="copy-btn" onclick="copyOutput()">КОПИРОВАТЬ</button>`;
+  out.classList.add('empty');
+}
+
+function copyOutput() {
+  const text = document.getElementById('output-text').textContent.replace('КОПИРОВАТЬ','').trim();
+  if (!text || text === 'Перевод появится здесь...') return;
+  navigator.clipboard.writeText(text).then(() => showFlash('Скопировано!'));
+}
+
+function updateCharCount() {
+  const len = document.getElementById('input-text').value.length;
+  document.getElementById('char-count').textContent = `${len} / ∞`;
+}
+
+// ===== LANG SELECTION =====
+function setLang(side, lang, btn) {
+  // Prevent same lang on both sides
+  const otherSide = side === 'from' ? 'to' : 'from';
+  const otherLang = side === 'from' ? toLang : fromLang;
+  if (lang === otherLang) {
+    // Auto-swap other side
+    const otherPrev = side === 'from' ? fromLang : toLang;
+    setLangInternal(otherSide, otherPrev);
+  }
+  setLangInternal(side, lang);
+  updateLabels();
+
+  // Update active btn
+  const panel = document.getElementById(side + '-panel');
+  panel.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Update other panel active state
+  const otherPanel = document.getElementById(otherSide + '-panel');
+  const curOther = side === 'from' ? toLang : fromLang;
+  otherPanel.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === curOther);
+  });
+}
+
+function setLangInternal(side, lang) {
+  if (side === 'from') fromLang = lang;
+  else toLang = lang;
+}
+
+function swapLangs() {
+  [fromLang, toLang] = [toLang, fromLang];
+  // Swap input/output text
+  const inputEl = document.getElementById('input-text');
+  const outputEl = document.getElementById('output-text');
+  const outText = outputEl.textContent.replace('КОПИРОВАТЬ','').trim();
+  if (outText && outText !== 'Перевод появится здесь...' && outText !== 'Ничего не найдено в словаре') {
+    inputEl.value = outText;
+  }
+  updateLabels();
+  updateActiveBtns();
+  clearAll();
+  if (inputEl.value) doTranslate();
+}
+
+function updateLabels() {
+  document.getElementById('from-label').textContent = LANG_LABELS[fromLang];
+  document.getElementById('to-label').textContent = LANG_LABELS[toLang];
+  document.getElementById('input-text').placeholder = LANG_PLACEHOLDERS[fromLang];
+}
+
+function updateActiveBtns() {
+  document.querySelectorAll('#from-panel .lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === fromLang);
+  });
+  document.querySelectorAll('#to-panel .lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === toLang);
+  });
+}
+
+// ===== BUILD DICTIONARY UI =====
+function buildDict() {
+  const grid = document.getElementById('dict-grid');
+  CATEGORIES.forEach(cat => {
+    const el = document.createElement('div');
+    el.className = 'dict-category';
+    const w95List = cat.words.map(w => `<code style="color:var(--green);font-size:0.7rem">${DICT[w]||'?'}</code>`);
+    el.innerHTML = `
+      <div class="dict-cat-header">${cat.label}</div>
+      <div class="dict-entries">
+        ${cat.words.map(w => `
+          <div class="dict-entry" onclick="insertWord('${w}')">
+            <span class="dict-ru">${w}</span>
+            <span class="dict-95">${DICT[w] || '?'}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function insertWord(word) {
+  const inp = document.getElementById('input-text');
+  // If from-lang is 95, insert the 95 word; else insert the ru word
+  const toInsert = fromLang === '95' ? (DICT[word] || word) : word;
+  const pos = inp.selectionStart;
+  const before = inp.value.substring(0, pos);
+  const after = inp.value.substring(pos);
+  const spaceBefore = before && !before.endsWith(' ') ? ' ' : '';
+  inp.value = before + spaceBefore + toInsert + ' ' + after;
+  inp.focus();
+  updateCharCount();
+  showFlash(`Вставлено: "${toInsert}"`);
+}
+
+// ===== FLASH =====
+function showFlash(msg) {
+  const f = document.getElementById('flash');
+  f.textContent = msg;
+  f.classList.add('show');
+  setTimeout(() => f.classList.remove('show'), 2000);
+}
+
+// ===== INIT =====
+buildDict();
+</script>
+
+</body>
+</html>
